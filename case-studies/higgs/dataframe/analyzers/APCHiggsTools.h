@@ -44,5 +44,51 @@ namespace APCHiggsTools{
   ROOT::VecOps::RVec<edm4hep::ReconstructedParticleData>  sort_greater(ROOT::VecOps::RVec<edm4hep::ReconstructedParticleData> in);
   //ROOT::VecOps::RVec<edm4hep::ReconstructedParticleData>  get_subleading(ROOT::VecOps::RVec<edm4hep::ReconstructedParticleData> in);
   float Reweighting_wzp_kkmc(float pT, float m);
+
+  ///get acolinearity
+  ROOT::VecOps::RVec<float> acolinearity(ROOT::VecOps::RVec<edm4hep::ReconstructedParticleData> in);
+  
+  ///get acoplanarity
+  ROOT::VecOps::RVec<float> acoplanarity(ROOT::VecOps::RVec<edm4hep::ReconstructedParticleData> in);
+ 
+  /// muon scale shifts
+  struct momentum_scale {
+    momentum_scale(float arg_scaleunc);
+    float scaleunc = 1.;
+    ROOT::VecOps::RVec<edm4hep::ReconstructedParticleData>  operator() (ROOT::VecOps::RVec<edm4hep::ReconstructedParticleData> in);
+  };
+  /// to be added to your ReconstructedParticle.h :
+  
+  /// select ReconstructedParticles with a given type 
+  struct sel_type {
+    sel_type( int arg_pdg, bool arg_chargeconjugate);
+    int m_pdg = 13;
+    bool m_chargeconjugate = true;
+    ROOT::VecOps::RVec<edm4hep::ReconstructedParticleData>  operator() (ROOT::VecOps::RVec<edm4hep::ReconstructedParticleData> in);
+  };
+
+  /// isolation of a RecoPrticle wrt the others
+  ROOT::VecOps::RVec<float> Isolation( ROOT::VecOps::RVec<edm4hep::ReconstructedParticleData> particles, ROOT::VecOps::RVec<edm4hep::ReconstructedParticleData> in );
+  
+  struct sel_isol {
+    sel_isol(float arg_isocut);
+    float m_isocut = 9999.;
+    ROOT::VecOps::RVec<edm4hep::ReconstructedParticleData>  operator() (ROOT::VecOps::RVec<edm4hep::ReconstructedParticleData> particles, ROOT::VecOps::RVec<float> var ) ;
+  
+  };
+  
+  /// cf Delphes Merger module - used for glbal sum
+  ROOT::VecOps::RVec<edm4hep::ReconstructedParticleData> Merger( ROOT::VecOps::RVec<edm4hep::ReconstructedParticleData> in ) ;
+  
+  /// boost along x of the ReconstructedParticles 
+  struct BoostAngle {
+    BoostAngle( float arg_angle );
+    float m_angle = -0.015 ;
+    ROOT::VecOps::RVec<edm4hep::ReconstructedParticleData>  operator() (ROOT::VecOps::RVec<edm4hep::ReconstructedParticleData> in );
+  };
+
+
+
+
 }
 #endif

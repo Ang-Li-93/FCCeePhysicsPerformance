@@ -209,6 +209,180 @@ float APCHiggsTools::Reweighting_wzp_kkmc(float pT, float m) {
   return scale;
 }
 
+ROOT::VecOps::RVec<float> acolinearity(ROOT::VecOps::RVec<edm4hep::ReconstructedParticleData> in){
+  ROOT::VecOps::RVec<float> result;
+  if(in.size() != 2) return result;
+
+  TLorentzVector p1;
+  p1.SetXYZM(in[0].momentum.x, in[0].momentum.y, in[0].momentum.z, in[0].mass);
+
+  TLorentzVector p2;
+  p2.SetXYZM(in[1].momentum.x, in[1].momentum.y, in[1].momentum.z, in[1].mass);
+
+  float acol = abs(p1.Theta() - p2.Theta());
+
+  result.push_back(acol);
+  return result;
+}
+
+
+
+ROOT::VecOps::RVec<float> acoplanarity(ROOT::VecOps::RVec<edm4hep::ReconstructedParticleData> in){
+  ROOT::VecOps::RVec<float> result;
+  if(in.size() != 2) return result;
+
+  TLorentzVector p1;
+  p1.SetXYZM(in[0].momentum.x, in[0].momentum.y, in[0].momentum.z, in[0].mass);
+
+  TLorentzVector p2;
+  p2.SetXYZM(in[1].momentum.x, in[1].momentum.y, in[1].momentum.z, in[1].mass);
+
+  float acop = abs(p1.Phi() - p2.Phi());
+  if(acop > M_PI) acop = 2 * M_PI - acop;
+  acop = M_PI - acop;
+
+  result.push_back(acop);
+  return result;
+}
+
+
+// perturb the scale of the particles
+APCHiggsTools::momentum_scale::momentum_scale(float arg_scaleunc) : scaleunc(arg_scaleunc) {};
+ROOT::VecOps::RVec<edm4hep::ReconstructedParticleData>  APCHiggsTools::momentum_scale::operator() (ROOT::VecOps::RVec<edm4hep::ReconstructedParticleData> in) {
+  ROOT::VecOps::RVec<edm4hep::ReconstructedParticleData> result;
+  result.reserve(in.size());
+  for (size_t i = 0; i < in.size(); ++i) {
+    auto & p = in[i];
+    /*
+     TLorentzVector lv;
+     lv.SetXYZM(p.momentum.x, p.momentum.y, p.momentum.z, p.mass);
+     lv *= (1. + scaleunc);
+     p.momentum.x = lv.Px();
+     p.momentum.y = lv.Py();
+     p.momentum.z = lv.Pz();
+     //p.energy = lv.E();
+    */
+    p.momentum.x = p.momentum.x*(1. + scaleunc);
+    p.momentum.y = p.momentum.y*(1. + scaleunc);
+    p.momentum.z = p.momentum.z*(1. + scaleunc);
+    result.emplace_back(p);
+  }
+  return result;
+}
+
+/// to be added to your ReconstructedParticle.cc
+sel_type::sel_type( int arg_pdg, bool arg_chargeconjugate) : m_pdg(arg_pdg), m_chargeconjugate( arg_chargeconjugate )  {};
+
+ROOT::VecOps::RVec<edm4hep::ReconstructedParticleData>  APCHiggsTools::sel_type::operator() (ROOT::VecOps::RVec<edm4hep::ReconstructedParticleData> in) {
+  ROOT::VecOps::RVec<edm4hep::ReconstructedParticleData> result;
+  result.reserve(in.size());
+  for (size_t i = 0; i < in.size(); ++i) {
+    auto & p = in[i];
+    if ( m_chargeconjugate ) {
+        if ( std::abs( p.type ) == std::abs( m_pdg)  ) result.emplace_back(p);
+    }
+    else {
+        if ( p.type == m_pdg ) result.emplace_back(p);
+    }
+  }
+  return result;
+}
+
+ROOT::VecOps::RVec<float> Isolation( ROOT::VecOps::RVec<edm4hep::ReconstructedParticleData> particles, ROOT::VecOps::RVec<edm4hep::ReconstructedParticleData> in ) {
+
+  ROOT::VecOps::RVec<float> result;
+
+  float DeltaRMax = 0.5 ;
+  float PTMin = 0.5 ;
+
+  for (size_t i = 0; i < particles.size(); ++i) {
+
+    auto & par1 = in[i];
+    float pt1 = sqrt( pow(par1.momentum.x, 2) + pow(par1.momentum.y, 2) ) ;
+
+    TVector3 p1(in.at(i).momentum.x, in.at(i).momentum.y, in.at(i).momentum.z );
+    float sum = 0;
+
+    for (size_t j = 0; j < in.size(); ++j) {
+      auto & par2 = in[j];
+      if ( par1.energy == par2.energy && par1.momentum.x == par2.momentum.x && par1.momentum.y == par2.momentum.y && par1.momentum.z == par2.momentum.z ) continue;
+
+      TVector3 p2( in.at(j).momentum.x, in.at(j).momentum.y, in.at(j).momentum.z );
+      if ( sqrt( pow(par2.momentum.x, 2) + pow(par2.momentum.y, 2) ) < PTMin ) continue;
+      float delta_ij = fabs( p1.DeltaR( p2 ) );
+      if ( delta_ij < DeltaRMax)  sum +=  sqrt( pow(par2.momentum.x, 2) + pow(par2.momentum.y, 2) ) ;
+
+    }
+
+    float isolation = sum / pt1 ;
+    result.push_back( isolation );
+  }
+
+  return result;
+}
+
+sel_isol::sel_isol( float arg_isocut ) : m_isocut (arg_isocut) {};
+ROOT::VecOps::RVec<edm4hep::ReconstructedParticleData> APCHiggsTools::sel_isol::operator() (  ROOT::VecOps::RVec<edm4hep::ReconstructedParticleData> particles, ROOT::VecOps::RVec<float> var ) { 
+  
+  ROOT::VecOps::RVec<edm4hep::ReconstructedParticleData> result;
+  for (size_t i=0; i < particles.size(); ++i) {
+    auto & p = particles[i];
+    if ( var[i] < m_isocut) result.emplace_back( p );
+  }
+
+  return result;
+}
+
+BoostAngle::BoostAngle( float arg_angle ) : m_angle ( arg_angle ) {};
+ROOT::VecOps::RVec<edm4hep::ReconstructedParticleData> APCHiggsTools::BoostAngle::operator() ( ROOT::VecOps::RVec<edm4hep::ReconstructedParticleData> in ) {
+  ROOT::VecOps::RVec<edm4hep::ReconstructedParticleData> result;
+  float ta =  tan( m_angle ) ;
+  for ( size_t i=0; i < in.size(); ++i) {
+    auto & p = in[i];
+    edm4hep::ReconstructedParticleData newp = p;
+    float e = p.energy ;
+    float px = p.momentum.x;
+    float e_prime = e * sqrt( 1 + ta*ta ) + px * ta ;
+    float px_prime = px * sqrt( 1 + ta*ta ) + e * ta ;
+    newp.momentum.x = px_prime;
+    newp.energy = e_prime;
+    result.push_back( newp );
+  }
+  return result;
+}
+
+ROOT::VecOps::RVec<edm4hep::ReconstructedParticleData> Merger( ROOT::VecOps::RVec<edm4hep::ReconstructedParticleData> in ) {
+  // cf Delphes Merger module. Returns a vector with one single RecoParticle corresponding to the global
+  // sum (cf the "MissingET" object in the Delphes files )
+  ROOT::VecOps::RVec<edm4hep::ReconstructedParticleData> result;
+  edm4hep::ReconstructedParticleData sum;
+  float px=0;
+  float py=0;
+  float pz=0;
+  float energy=0;
+
+  for (size_t i = 0; i < in.size(); ++i) {
+    auto & p = in[i];
+    px = px + p.momentum.x;
+    py = py + p.momentum.y;
+    pz = pz + p.momentum.z;
+    energy = energy + p.energy ;
+  }
+
+  sum.momentum.x = px;
+  sum.momentum.y = py;
+  sum.momentum.z = pz;
+  sum.energy = energy;
+  sum.charge = 0;
+  sum.mass = 0;
+
+  result.push_back( sum );
+  return result;
+}
+
+
+
+
 
 
 
