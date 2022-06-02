@@ -1,12 +1,12 @@
 #Mandatory: List of processes
 processList = {
-    #'wzp6_ee_mumuH_ecm240':{'chunks':5},
-    #'p8_ee_WW_mumu_ecm240':{'chunks':5},
-    #'wzp6_egamma_eZ_Zmumu_ecm240':{'chunks':5},
-    #'wzp6_gammae_eZ_Zmumu_ecm240':{'chunks':5},
-    #'wzp6_ee_mumu_ecm240':{'chunks':5},
-    #'p8_ee_ZZ_ecm240':{'chunks':5}
-    'p8_ee_ZH_ecm240':{'fraction':0.02}
+    'wzp6_ee_mumuH_ecm240':{'chunks':5},
+    'p8_ee_WW_mumu_ecm240':{'chunks':5},
+    'wzp6_egamma_eZ_Zmumu_ecm240':{'chunks':5},
+    'wzp6_gammae_eZ_Zmumu_ecm240':{'chunks':5},
+    'wzp6_ee_mumu_ecm240':{'chunks':5},
+    'p8_ee_ZZ_ecm240':{'chunks':5}
+    #'p8_ee_ZH_ecm240':{'fraction':0.02}
 }
 
 #Mandatory: Production tag when running over EDM4Hep centrally produced events, this points to the yaml files for getting sample statistics
@@ -14,15 +14,15 @@ prodTag     = "FCCee/spring2021/IDEA/"
 
 #from userConfig import loc
 #Optional: output directory, default is local dir
-outputDir="/afs/cern.ch/work/l/lia/private/FCC/MVA/FCCeePhysicsPerformance/case-studies/higgs/mH-recoil/ZH_mumu_recoil_batch/stage1/flatNtuples"
-#outputDirEos= "/eos/user/l/lia/FCCee/MVA/flatNtuples/"
-#eosType = "eosuser"
+#outputDir="/afs/cern.ch/work/l/lia/private/FCC/MVA/FCCeePhysicsPerformance/case-studies/higgs/mH-recoil/ZH_mumu_recoil_batch/stage1/flatNtuples_test"
+outputDirEos= "/eos/user/l/lia/FCCee/MVA/flatNtuples_test/"
+eosType = "eosuser"
 #Optional: ncpus, default is 4
 nCPUS       = 4
 
 #Optional running on HTCondor, default is False
-#runBatch    = True
-runBatch    = False
+runBatch    = True
+#runBatch    = False
 #Optional batch queue name when running on HTCondor, default is workday
 batchQueue = "longlunch"
 
@@ -73,19 +73,19 @@ class RDFanalysis():
             ##-----------------------------------------##
             ##     Build Trust                         ##
             ##-----------------------------------------##
-            .Define("stable",  "FCCAnalyses::MCParticle::sel_genStatus(2) (Particle)")
+            .Define("stable",  "MCParticle::sel_genStatus(2) (Particle)")
             ###
             #Muon
             ###
-            .Define("theGenLevelMuminus",  "FCCAnalyses::MCParticle::sel_pdgID( 13, false) (stable)")
-            .Define("theGenLevelMuplus",  "FCCAnalyses::MCParticle::sel_pdgID( -13, false) (stable)")
-            .Define("theGenLevelMuminus_tlv", "FCCAnalyses::MCParticle::get_tlv(theGenLevelMuminus) ")
-            .Define("theGenLevelMuplus_tlv", "FCCAnalyses::MCParticle::get_tlv(theGenLevelMuplus) ")
+            .Define("theGenLevelMuminus",  "MCParticle::sel_pdgID( 13, false) (stable)")
+            .Define("theGenLevelMuplus",  "MCParticle::sel_pdgID( -13, false) (stable)")
+            .Define("theGenLevelMuminus_tlv", "MCParticle::get_tlv(theGenLevelMuminus) ")
+            .Define("theGenLevelMuplus_tlv", "MCParticle::get_tlv(theGenLevelMuplus) ")
             ###
             #Higgs
             ###
-            .Define("theGenLevelHiggs", "FCCAnalyses::MCParticle::sel_pdgID( 25, false) (stable)")
-            .Define("theGenLevelHiggs_tlv", "FCCAnalyses::MCParticle::get_tlv(theGenLevelHiggs) ")
+            .Define("theGenLevelHiggs", "MCParticle::sel_pdgID( 25, false) (stable)")
+            .Define("theGenLevelHiggs_tlv", "MCParticle::get_tlv(theGenLevelHiggs) ")
             
             ###
             #mumu

@@ -1,5 +1,6 @@
 #Mandatory: List of processes
 processList = {
+    #"wzp6_ee_mumuH_ecm240":{'fraction':0.02},
     "wzp6_ee_mumuH_ecm240":{'chunks':5},
     "wzp6_ee_mumuH_mH-lower-50MeV_ecm240":{'chunks':5},
     "wzp6_ee_mumuH_mH-lower-100MeV_ecm240":{'chunks':5},
@@ -35,7 +36,7 @@ prodTag     = "FCCee/spring2021/IDEA/"
 #from userConfig import loc
 #Optional: output directory, default is local dir
 #outputDir="/afs/cern.ch/work/l/lia/private/FCC/MVA/FCCeePhysicsPerformance/case-studies/higgs/mH-recoil/ZH_mumu_recoil_batch/stage1/flatNtuples"
-outputDirEos= "/eos/user/l/lia/FCCee/MVA/flatNtuples_stage2/"
+outputDirEos= "/eos/user/l/lia/FCCee/MVA/flatNtuples_stage2_test/"
 eosType = "eosuser"
 #Optional: ncpus, default is 4
 nCPUS       = 4
@@ -256,8 +257,8 @@ class RDFanalysis():
             # systematics
         
             # muon momentum scale
-            .Define("muons_muscaleup", "ReconstructedParticle::momentum_scale(1e-5)(muons)")
-            .Define("muons_muscaledw", "ReconstructedParticle::momentum_scale(-1e-5)(muons)")
+            .Define("muons_muscaleup", "APCHiggsTools::momentum_scale(1e-5)(muons)")
+            .Define("muons_muscaledw", "APCHiggsTools::momentum_scale(-1e-5)(muons)")
             .Define("selected_muons_muscaleup", "APCHiggsTools::muon_quality_check(muons_muscaleup)")
             .Define("selected_muons_muscaledw", "APCHiggsTools::muon_quality_check(muons_muscaledw)")
             #.Define("selected_muons_muscaleup", "muon_quality_check(muons_muscaleup)")
