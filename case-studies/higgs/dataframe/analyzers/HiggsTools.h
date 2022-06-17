@@ -1,6 +1,6 @@
 
-#ifndef  APCHiggsTools_ANALYZERS_H
-#define  APCHiggsTools_ANALYZERS_H
+#ifndef  HiggsTools_ANALYZERS_H
+#define  HiggsTools_ANALYZERS_H
 
 #include <cmath>
 #include <vector>
@@ -13,7 +13,7 @@
 
 #include "ReconstructedParticle2MC.h"
 
-namespace APCHiggsTools{
+namespace HiggsTools{
 	///build the resonance from 2 particles from an arbitrary list of input ReconstructedPartilces. Keep the closest to the mass given as input
 	struct resonanceZBuilder {
 		float m_resonance_mass;

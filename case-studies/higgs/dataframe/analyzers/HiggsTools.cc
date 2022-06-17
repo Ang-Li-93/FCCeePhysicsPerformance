@@ -1,11 +1,11 @@
-#include "APCHiggsTools.h"
+#include "HiggsTools.h"
 #include "ReconstructedParticle.h"
 
 #include <algorithm>
 
-using namespace APCHiggsTools;
+using namespace HiggsTools;
 
-ROOT::VecOps::RVec<edm4hep::ReconstructedParticleData>  APCHiggsTools::muon_quality_check(ROOT::VecOps::RVec<edm4hep::ReconstructedParticleData> in){
+ROOT::VecOps::RVec<edm4hep::ReconstructedParticleData>  HiggsTools::muon_quality_check(ROOT::VecOps::RVec<edm4hep::ReconstructedParticleData> in){
 	ROOT::VecOps::RVec<edm4hep::ReconstructedParticleData> result;
   //at least one muon + and one muon - in each event
   int n_muon_plus = 0;
@@ -25,7 +25,7 @@ ROOT::VecOps::RVec<edm4hep::ReconstructedParticleData>  APCHiggsTools::muon_qual
 	return result;
 }
 
-ROOT::VecOps::RVec<float> APCHiggsTools::get_cosTheta(ROOT::VecOps::RVec<edm4hep::ReconstructedParticleData> in) {
+ROOT::VecOps::RVec<float> HiggsTools::get_cosTheta(ROOT::VecOps::RVec<edm4hep::ReconstructedParticleData> in) {
    ROOT::VecOps::RVec<float> result;
 	 for (auto & p: in) {
 		 TLorentzVector tlv;
@@ -35,7 +35,7 @@ ROOT::VecOps::RVec<float> APCHiggsTools::get_cosTheta(ROOT::VecOps::RVec<edm4hep
 	 return result;
 }
 
-ROOT::VecOps::RVec<float> APCHiggsTools::get_cosTheta_miss(ROOT::VecOps::RVec<Float_t>Px, ROOT::VecOps::RVec<Float_t>Py, ROOT::VecOps::RVec<Float_t>Pz, ROOT::VecOps::RVec<Float_t>E) {
+ROOT::VecOps::RVec<float> HiggsTools::get_cosTheta_miss(ROOT::VecOps::RVec<Float_t>Px, ROOT::VecOps::RVec<Float_t>Py, ROOT::VecOps::RVec<Float_t>Pz, ROOT::VecOps::RVec<Float_t>E) {
   ROOT::VecOps::RVec<float> result;
   for (int i =0; i < Px.size(); ++i) {
 		TLorentzVector tlv;
@@ -46,8 +46,8 @@ ROOT::VecOps::RVec<float> APCHiggsTools::get_cosTheta_miss(ROOT::VecOps::RVec<Fl
 } 
 
 
-APCHiggsTools::resonanceZBuilder::resonanceZBuilder(float arg_resonance_mass) {m_resonance_mass = arg_resonance_mass;}
-ROOT::VecOps::RVec<edm4hep::ReconstructedParticleData> APCHiggsTools::resonanceZBuilder::operator()(ROOT::VecOps::RVec<edm4hep::ReconstructedParticleData> legs) {
+HiggsTools::resonanceZBuilder::resonanceZBuilder(float arg_resonance_mass) {m_resonance_mass = arg_resonance_mass;}
+ROOT::VecOps::RVec<edm4hep::ReconstructedParticleData> HiggsTools::resonanceZBuilder::operator()(ROOT::VecOps::RVec<edm4hep::ReconstructedParticleData> legs) {
 
   ROOT::VecOps::RVec<edm4hep::ReconstructedParticleData> result;
   int n = legs.size();
@@ -90,8 +90,8 @@ ROOT::VecOps::RVec<edm4hep::ReconstructedParticleData> APCHiggsTools::resonanceZ
 
 
 
-APCHiggsTools::resonanceZBuilder2::resonanceZBuilder2(float arg_resonance_mass, bool arg_use_MC_Kinematics) {m_resonance_mass = arg_resonance_mass, m_use_MC_Kinematics = arg_use_MC_Kinematics;}
-ROOT::VecOps::RVec<edm4hep::ReconstructedParticleData> APCHiggsTools::resonanceZBuilder2::operator()(ROOT::VecOps::RVec<edm4hep::ReconstructedParticleData> legs,
+HiggsTools::resonanceZBuilder2::resonanceZBuilder2(float arg_resonance_mass, bool arg_use_MC_Kinematics) {m_resonance_mass = arg_resonance_mass, m_use_MC_Kinematics = arg_use_MC_Kinematics;}
+ROOT::VecOps::RVec<edm4hep::ReconstructedParticleData> HiggsTools::resonanceZBuilder2::operator()(ROOT::VecOps::RVec<edm4hep::ReconstructedParticleData> legs,
 				ROOT::VecOps::RVec<int> recind ,
 				ROOT::VecOps::RVec<int> mcind ,
 				ROOT::VecOps::RVec<edm4hep::ReconstructedParticleData> reco ,
@@ -155,7 +155,7 @@ ROOT::VecOps::RVec<edm4hep::ReconstructedParticleData> APCHiggsTools::resonanceZ
   }
 }
 
-ROOT::VecOps::RVec<edm4hep::ReconstructedParticleData>  APCHiggsTools::sort_greater(ROOT::VecOps::RVec<edm4hep::ReconstructedParticleData> in){
+ROOT::VecOps::RVec<edm4hep::ReconstructedParticleData>  HiggsTools::sort_greater(ROOT::VecOps::RVec<edm4hep::ReconstructedParticleData> in){
 	ROOT::VecOps::RVec<edm4hep::ReconstructedParticleData> result;
   //at least one muon + and one muon - in each event
 	
@@ -179,7 +179,7 @@ ROOT::VecOps::RVec<edm4hep::ReconstructedParticleData>  APCHiggsTools::sort_grea
 
 
 
-float APCHiggsTools::Reweighting_wzp_kkmc(float pT, float m) {
+float HiggsTools::Reweighting_wzp_kkmc(float pT, float m) {
   float scale;
   if (m > 220.){
     if ( pT > 0. && pT <= 1.){scale = 1.0032322;}
@@ -247,8 +247,8 @@ ROOT::VecOps::RVec<float> acoplanarity(ROOT::VecOps::RVec<edm4hep::Reconstructed
 
 
 // perturb the scale of the particles
-APCHiggsTools::momentum_scale::momentum_scale(float arg_scaleunc) : scaleunc(arg_scaleunc) {};
-ROOT::VecOps::RVec<edm4hep::ReconstructedParticleData>  APCHiggsTools::momentum_scale::operator() (ROOT::VecOps::RVec<edm4hep::ReconstructedParticleData> in) {
+HiggsTools::momentum_scale::momentum_scale(float arg_scaleunc) : scaleunc(arg_scaleunc) {};
+ROOT::VecOps::RVec<edm4hep::ReconstructedParticleData>  HiggsTools::momentum_scale::operator() (ROOT::VecOps::RVec<edm4hep::ReconstructedParticleData> in) {
   ROOT::VecOps::RVec<edm4hep::ReconstructedParticleData> result;
   result.reserve(in.size());
   for (size_t i = 0; i < in.size(); ++i) {
@@ -273,7 +273,7 @@ ROOT::VecOps::RVec<edm4hep::ReconstructedParticleData>  APCHiggsTools::momentum_
 /// to be added to your ReconstructedParticle.cc
 sel_type::sel_type( int arg_pdg, bool arg_chargeconjugate) : m_pdg(arg_pdg), m_chargeconjugate( arg_chargeconjugate )  {};
 
-ROOT::VecOps::RVec<edm4hep::ReconstructedParticleData>  APCHiggsTools::sel_type::operator() (ROOT::VecOps::RVec<edm4hep::ReconstructedParticleData> in) {
+ROOT::VecOps::RVec<edm4hep::ReconstructedParticleData>  HiggsTools::sel_type::operator() (ROOT::VecOps::RVec<edm4hep::ReconstructedParticleData> in) {
   ROOT::VecOps::RVec<edm4hep::ReconstructedParticleData> result;
   result.reserve(in.size());
   for (size_t i = 0; i < in.size(); ++i) {
@@ -322,7 +322,7 @@ ROOT::VecOps::RVec<float> Isolation( ROOT::VecOps::RVec<edm4hep::ReconstructedPa
 }
 
 sel_isol::sel_isol( float arg_isocut ) : m_isocut (arg_isocut) {};
-ROOT::VecOps::RVec<edm4hep::ReconstructedParticleData> APCHiggsTools::sel_isol::operator() (  ROOT::VecOps::RVec<edm4hep::ReconstructedParticleData> particles, ROOT::VecOps::RVec<float> var ) { 
+ROOT::VecOps::RVec<edm4hep::ReconstructedParticleData> HiggsTools::sel_isol::operator() (  ROOT::VecOps::RVec<edm4hep::ReconstructedParticleData> particles, ROOT::VecOps::RVec<float> var ) { 
   
   ROOT::VecOps::RVec<edm4hep::ReconstructedParticleData> result;
   for (size_t i=0; i < particles.size(); ++i) {
@@ -334,7 +334,7 @@ ROOT::VecOps::RVec<edm4hep::ReconstructedParticleData> APCHiggsTools::sel_isol::
 }
 
 BoostAngle::BoostAngle( float arg_angle ) : m_angle ( arg_angle ) {};
-ROOT::VecOps::RVec<edm4hep::ReconstructedParticleData> APCHiggsTools::BoostAngle::operator() ( ROOT::VecOps::RVec<edm4hep::ReconstructedParticleData> in ) {
+ROOT::VecOps::RVec<edm4hep::ReconstructedParticleData> HiggsTools::BoostAngle::operator() ( ROOT::VecOps::RVec<edm4hep::ReconstructedParticleData> in ) {
   ROOT::VecOps::RVec<edm4hep::ReconstructedParticleData> result;
   float ta =  tan( m_angle ) ;
   for ( size_t i=0; i < in.size(); ++i) {

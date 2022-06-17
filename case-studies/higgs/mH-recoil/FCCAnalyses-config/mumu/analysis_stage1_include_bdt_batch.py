@@ -86,7 +86,7 @@ class RDFanalysis():
             ###
             #Missinginformstion 
             ###
-            .Define('missingET_costheta', 'APCHiggsTools::get_cosTheta(MissingET)')
+            .Define('missingET_costheta', 'HiggsTools::get_cosTheta(MissingET)')
             ###
             #Muon
             ###
@@ -94,7 +94,7 @@ class RDFanalysis():
             .Define("muons",  "ReconstructedParticle::get(Muon0, ReconstructedParticles)")
             #.Filter("muon_check(muons)")
             #.Define("selected_muons", "return muons") 
-            .Define("selected_muons", "APCHiggsTools::muon_quality_check(muons)")
+            .Define("selected_muons", "HiggsTools::muon_quality_check(muons)")
             .Define("selected_muons_plus", "ReconstructedParticle::sel_charge(1.0,false)(selected_muons)")
             .Define("selected_muons_minus", "ReconstructedParticle::sel_charge(-1.0,false)(selected_muons)")
             .Define("selected_muons_plus_n", "ReconstructedParticle::get_n(selected_muons_plus)")
@@ -107,11 +107,11 @@ class RDFanalysis():
             .Define("selected_muons_p",     "ReconstructedParticle::get_p(selected_muons)")
             .Define("selected_muons_e",     "ReconstructedParticle::get_e(selected_muons)")
             .Define("selected_muons_m",     "ReconstructedParticle::get_mass(selected_muons)")
-            .Define("selected_muons_costheta",  "APCHiggsTools::get_cosTheta(selected_muons)")
+            .Define("selected_muons_costheta",  "HiggsTools::get_cosTheta(selected_muons)")
             .Define("selected_muons_delta_max", "ReconstructedParticle::angular_separationBuilder(0)(selected_muons)")
             .Define("selected_muons_delta_min", "ReconstructedParticle::angular_separationBuilder(1)(selected_muons)")
             .Define("selected_muons_delta_avg", "ReconstructedParticle::angular_separationBuilder(2)(selected_muons)") 
-            .Define("sorted_muons",  "APCHiggsTools::sort_greater(selected_muons)")
+            .Define("sorted_muons",  "HiggsTools::sort_greater(selected_muons)")
             .Define("sorted_muons_pt",  "ReconstructedParticle::get_pt(sorted_muons)")
             .Define("sorted_muons_px",  "ReconstructedParticle::get_px(sorted_muons)") 
             .Define("sorted_muons_py",  "ReconstructedParticle::get_py(sorted_muons)")
@@ -152,7 +152,7 @@ class RDFanalysis():
             ###
             #Rconstruct Zed from Z->mumu
             ###
-            .Define("zed_leptonic",         "APCHiggsTools::resonanceZBuilder(91)(selected_muons)")
+            .Define("zed_leptonic",         "HiggsTools::resonanceZBuilder(91)(selected_muons)")
             .Define("zed_leptonic_m",       "ReconstructedParticle::get_mass(zed_leptonic)")
             .Define("zed_leptonic_n",       "ReconstructedParticle::get_n(zed_leptonic)")
             .Define("zed_leptonic_charge",   "ReconstructedParticle::get_charge(zed_leptonic)")
@@ -160,7 +160,7 @@ class RDFanalysis():
             .Define("zed_leptonic_y",      "ReconstructedParticle::get_y(zed_leptonic)")
             .Define("zed_leptonic_p",      "ReconstructedParticle::get_p(zed_leptonic)")
             .Define("zed_leptonic_e",      "ReconstructedParticle::get_e(zed_leptonic)")
-            .Define("zed_leptonic_costheta",  "APCHiggsTools::get_cosTheta(zed_leptonic)")
+            .Define("zed_leptonic_costheta",  "HiggsTools::get_cosTheta(zed_leptonic)")
             .Define("zed_leptonic_px",      "ReconstructedParticle::get_px(zed_leptonic)")
             .Define("zed_leptonic_py",      "ReconstructedParticle::get_py(zed_leptonic)")
             .Define("zed_leptonic_pz",      "ReconstructedParticle::get_pz(zed_leptonic)")
@@ -195,7 +195,7 @@ class RDFanalysis():
             .Define("zed_leptonic_recoil_y","ReconstructedParticle::get_y(zed_leptonic_recoil)")
             .Define("zed_leptonic_recoil_p","ReconstructedParticle::get_p(zed_leptonic_recoil)")
             .Define("zed_leptonic_recoil_e","ReconstructedParticle::get_e(zed_leptonic_recoil)")
-            .Define("zed_leptonic_recoil_costheta","APCHiggsTools::get_cosTheta(zed_leptonic_recoil)")
+            .Define("zed_leptonic_recoil_costheta","HiggsTools::get_cosTheta(zed_leptonic_recoil)")
          
             # Filter at least one candidate
             #.Filter("zed_leptonic_recoil_m.size()>0")
