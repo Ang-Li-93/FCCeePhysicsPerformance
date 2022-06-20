@@ -21,8 +21,8 @@ eosType = "eosuser"
 nCPUS       = 4
 
 #Optional running on HTCondor, default is False
-runBatch    = True
-#runBatch    = False
+#runBatch    = True
+runBatch    = False
 #Optional batch queue name when running on HTCondor, default is workday
 batchQueue = "longlunch"
 
@@ -164,8 +164,8 @@ class RDFanalysis():
             .Define("muon_subleading_e",  "return sorted_muons_e.at(1)")
             .Define("muon_subleading_m",  "return sorted_muons_m.at(1)")
             .Define("muon_subleading_theta",  "return sorted_muons_theta.at(1)")
-
-
+            .Define("muon_acolinearity", "HiggsTools::acolinearity(sorted_muons)")
+            .Define("muon_acoplanarity", "HiggsTools::acoplanarity(sorted_muons)") 
             #.Define("Selected_muons_plus_pt", "if(selected_muons_plus_pt.size()>0) return selected_muons_plus_pt.at(0); else return -std::numeric_limits<float>::max()")
             #.Define("Selected_muons_minus_pt", "if(selected_muons_plus_pt.size()>0) return selected_muons_minus_pt.at(0); else return -std::numeric_limits<float>::max()")
             ###
@@ -253,6 +253,8 @@ class RDFanalysis():
             "muon_subleading_e",
             "muon_subleading_m",
             "muon_subleading_theta",
+            "muon_acolinearity",
+            "muon_acoplanarity",
             #Zed
             "Z_leptonic_m",      
             "Z_leptonic_pt",     
@@ -267,5 +269,7 @@ class RDFanalysis():
             "Z_leptonic_phi",    
             #Recoil
             "zed_leptonic_recoil_m",
+            #missing Information
+            'missingET_costheta'
         ]
         return branchList

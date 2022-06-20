@@ -17,17 +17,21 @@ formats        = ['pdf']
 outdir         = '/eos/user/l/lia/FCCee/MVA/trainedNtuples/plots/'
 
 variables = [  #muons
-               #"mz",
-               #"mz_zoom1",
-               #"mz_zoom2",
-               #"mz_zoom3",
-               #"mz_zoom4",
-               #"leptonic_recoil_m",
-               #"leptonic_recoil_m_zoom1",
-               #"leptonic_recoil_m_zoom2",
-               #"leptonic_recoil_m_zoom3",
-               #"leptonic_recoil_m_zoom4",
+               "mz",
+               "mz_zoom1",
+               "mz_zoom2",
+               "mz_zoom3",
+               "mz_zoom4",
+               "leptonic_recoil_m",
+               "leptonic_recoil_m_zoom1",
+               "leptonic_recoil_m_zoom2",
+               "leptonic_recoil_m_zoom3",
+               "leptonic_recoil_m_zoom4",
                "BDT_Score",
+               #control vaiables
+               "muon_acolinearity",
+               "muon_acoplanarity",
+               "missingET_costheta",
             ]
 ###Dictonnary with the analysis name as a key, and the list of selections to be plotted for this analysis. The name of the selections should be the same than in the final selection
 selections = {}

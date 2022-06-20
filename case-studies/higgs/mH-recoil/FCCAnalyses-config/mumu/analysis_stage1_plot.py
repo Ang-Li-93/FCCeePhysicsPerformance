@@ -42,6 +42,8 @@ variables = [  #muons
                "muon_subleading_e",
                "muon_subleading_m",
                "muon_subleading_theta",
+               "muon_acolinearity",
+               "muon_acoplanarity",
                #Zed
                "Z_leptonic_m",      
                "Z_leptonic_pt",     
@@ -56,6 +58,8 @@ variables = [  #muons
                "Z_leptonic_phi",    
                #Recoil
                "zed_leptonic_recoil_m",
+               #missing Information
+               "missingET_costheta"
             ]
 ###Dictonnary with the analysis name as a key, and the list of selections to be plotted for this analysis. The name of the selections should be the same than in the final selection
 selections = {}

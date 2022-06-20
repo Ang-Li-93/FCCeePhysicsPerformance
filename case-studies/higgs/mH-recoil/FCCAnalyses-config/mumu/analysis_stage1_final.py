@@ -69,6 +69,8 @@ histoList = {
     "muon_subleading_e":{"name":"muon_subleading_e","title":"muon_subleading_e","bin":100,"xmin":0,"xmax":100},
     "muon_subleading_m":{"name":"muon_subleading_m","title":"muon_subleading_m","bin":100,"xmin":0,"xmax":2}, 
     "muon_subleading_theta":{"name":"muon_subleading_theta","title":"muon_subleading_theta","bin":100,"xmin":-5,"xmax":5},
+    "muon_acolinearity":{"name":"muon_acolinearity","title":"acolinearity","bin":100,"xmin":-5,"xmax":5},
+    "muon_acoplanarity":{"name":"muon_acoplanarity","title":"acoplanarity","bin":100,"xmin":-5,"xmax":5},
     #Zed
     "Z_leptonic_m":{"name":"Z_leptonic_m","title":"Z_leptonic_m","bin":100,"xmin":0,"xmax":200},      
     "Z_leptonic_pt":{"name":"Z_leptonic_pt","title":"Z_leptonic_pt","bin":100,"xmin":0,"xmax":100},    
@@ -82,7 +84,9 @@ histoList = {
     "Z_leptonic_theta":{"name":"Z_leptonic_theta","title":"Z_leptonic_theta","bin":100,"xmin":-5,"xmax":5}, 
     "Z_leptonic_phi":{"name":"Z_leptonic_phi","title":"Z_leptonic_phi","bin":100,"xmin":-5,"xmax":5},
     #Recoil
-    "zed_leptonic_recoil_m":{"name":"zed_leptonic_recoil_m","title":"Z leptonic recoil [GeV]","bin":100,"xmin":0,"xmax":200}
-        
+    "zed_leptonic_recoil_m":{"name":"zed_leptonic_recoil_m","title":"Z leptonic recoil [GeV]","bin":100,"xmin":0,"xmax":200},
+    #missing Informations
+    "missingET_costheta":{"name":"missingET_costheta","title":"cos#theta_{missing}","bin":200,"xmin":-1,"xmax":1}      
+
 }
 

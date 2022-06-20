@@ -100,6 +100,10 @@ histoList = {
     "leptonic_recoil_m_zoom5":{"name":"zed_leptonic_recoil_m","title":"Z leptonic recoil [GeV]","bin":20,"xmin":124,"xmax":126}, 
     "BDT_Score":{"name":"MVAScore0","title":"BDT Score","bin":100,"xmin":0,"xmax":1}, 
     "BDT_Score_zoom1":{"name":"MVAScore0","title":"BDT Score","bin":110,"xmin":0,"xmax":1.1},  
+    #more control variables
+    "muon_acolinearity":{"name":"muon_acolinearity","title":"acolinearity","bin":100,"xmin":-5,"xmax":5},
+    "muon_acoplanarity":{"name":"muon_acoplanarity","title":"acoplanarity","bin":100,"xmin":-5,"xmax":5},
+    "missingET_costheta":{"name":"missingET_costheta","title":"cos#theta_{missing}","bin":200,"xmin":-1,"xmax":1}   
 }
 
 
