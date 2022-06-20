@@ -20,7 +20,7 @@ include_directories(${EDM4HEP_INCLUDE_DIRS}
 
 ROOT_GENERATE_DICTIONARY(G__FCCAnalysesHiggs 
                          dummyLoaderHiggs.h
-                         APCHiggsTools.h
+                         HiggsTools.h
                          LINKDEF LinkDef.h
                          )
 
