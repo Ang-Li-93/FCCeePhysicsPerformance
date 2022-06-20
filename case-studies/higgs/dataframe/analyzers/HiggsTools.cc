@@ -209,7 +209,7 @@ float HiggsTools::Reweighting_wzp_kkmc(float pT, float m) {
   return scale;
 }
 
-ROOT::VecOps::RVec<float> acolinearity(ROOT::VecOps::RVec<edm4hep::ReconstructedParticleData> in){
+ROOT::VecOps::RVec<float> HiggsTools::acolinearity(ROOT::VecOps::RVec<edm4hep::ReconstructedParticleData> in){
   ROOT::VecOps::RVec<float> result;
   if(in.size() < 2) return result;
 
@@ -225,7 +225,7 @@ ROOT::VecOps::RVec<float> acolinearity(ROOT::VecOps::RVec<edm4hep::Reconstructed
   return result;
 }
 
-ROOT::VecOps::RVec<float> acoplanarity(ROOT::VecOps::RVec<edm4hep::ReconstructedParticleData> in){
+ROOT::VecOps::RVec<float> HiggsTools::acoplanarity(ROOT::VecOps::RVec<edm4hep::ReconstructedParticleData> in){
   ROOT::VecOps::RVec<float> result;
   if(in.size() < 2) return result;
 
