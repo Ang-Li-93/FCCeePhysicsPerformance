@@ -644,7 +644,9 @@ def runFinal(rdfModule):
         procDict = json.loads(req.decode('utf-8'))
 
     else:
-        procFile = os.path.join(os.getenv('FCCDICTSDIR', deffccdicts), '') + procFile
+        if not ('eos' in procFile): 
+            procFile = os.path.join(os.getenv('FCCDICTSDIR', deffccdicts), '') + procFile
+        print(procFile)
         if not os.path.isfile(procFile):
             print ('----> No procDict found: ==={}===, exit'.format(procFile))
             sys.exit(3)
