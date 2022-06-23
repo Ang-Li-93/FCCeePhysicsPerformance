@@ -95,11 +95,12 @@ def run(vars):
         print(f"Efficiency of pre-selection on {q} sample: {eff[q]}")
     
     xsec_tot_bkg = eff["ZZ"]*xsec["ZZ"] + eff["WWmumu"]*xsec["WWmumu"] + eff["Zll"]*xsec["Zll"] + eff["eeZ"]*xsec["eeZ"]
-   
-    
+    for q in bkgs: 
+        print(f"Size of {q} in needed combined sample: {int(N_sig*((eff[q]*xsec[q])/xsec_tot_bkg))}")
+        print(f"Desired original size of the sample {q} is: {int((N_sig*((eff[q]*xsec[q])/xsec_tot_bkg))/eff[q])} have {N[q]}, need {N[q]-int((N_sig*((eff[q]*xsec[q])/xsec_tot_bkg))/eff[q])}")
     for q in bkgs:
-        df_bkg[q] = df_bkg[q].sample(n=int(N_sig*((eff[q]*xsec[q])/xsec_tot_bkg)),random_state=10)
-        print(f"Size of {q} in combined sample: {len(df_bkg[q])}")
+        df_bkg[q] = df_bkg[q].sample(n=int(N_sig*((eff[q]*xsec[q])/xsec_tot_bkg)),random_state=10,replace=True)
+        #print(f"Size of {q} in combined sample: {len(df_bkg[q])}")
 
     #Make a combined background sample according to BFs
     df_bkg_tot = pd.concat((df_bkg[q] for q in bkgs), ignore_index=True)
@@ -130,16 +131,16 @@ def run(vars):
     y_test  =  y_test.to_numpy() 
     #BDT
     config_dict = {
-            "n_estimators"      : 1000,
+            "n_estimators"      : 2000,
             "learning_rate"     : 0.15,
-            "max_depth"         : 10,
+            "max_depth"         : 3,
             'subsample'         : 0.5,
             'gamma'             : 3,
             'min_child_weight'  : 10,
             'max_delta_step'    : 0,
             'colsample_bytree'  : 0.5,
             }
-    early_stopping_round = 100
+    early_stopping_round = 200
     # Training
     bdt = xgb.XGBClassifier(n_estimators    =config_dict["n_estimators"],
                             max_depth       =config_dict["max_depth"],

@@ -33,7 +33,7 @@ userBatchConfig="/afs/cern.ch/work/l/lia/private/FCC/MVA/FCCeePhysicsPerformance
 #USER DEFINED CODE
 ROOT.gInterpreter.ProcessLine('''
     TMVA::Experimental::RBDT<> bdt("ZH_Recoil_BDT", "/eos/user/l/lia/FCCee/MVA/BDT/xgb_bdt_normal.root");
-    computeModel1 = TMVA::Experimental::Compute<25, float>(bdt);
+    computeModel1 = TMVA::Experimental::Compute<9, float>(bdt);
     ''')
 #Mandatory: RDFanalysis class where the use defines the operations on the TTree
 class RDFanalysis():
@@ -145,8 +145,10 @@ class RDFanalysis():
             .Define("muon_subleading_e",  "return sorted_muons_e.at(1)")
             .Define("muon_subleading_m",  "return sorted_muons_m.at(1)")
             .Define("muon_subleading_theta",  "return sorted_muons_theta.at(1)")
-            .Define("muon_acolinearity", "HiggsTools::acolinearity(sorted_muons)")
-            .Define("muon_acoplanarity", "HiggsTools::acoplanarity(sorted_muons)") 
+            .Define("Muon_acolinearity", "HiggsTools::acolinearity(sorted_muons)")
+            .Define("Muon_acoplanarity", "HiggsTools::acoplanarity(sorted_muons)") 
+            .Define("muon_acolinearity", "if(Muon_acolinearity.size()>0) return Muon_acolinearity.at(0); else return -std::numeric_limits<float>::max()") 
+            .Define("muon_acoplanarity", "if(Muon_acoplanarity.size()>0) return Muon_acoplanarity.at(0); else return -std::numeric_limits<float>::max()") 
             #.Define("Selected_muons_plus_pt", "if(selected_muons_plus_pt.size()>0) return selected_muons_plus_pt.at(0); else return -std::numeric_limits<float>::max()")
             #.Define("Selected_muons_minus_pt", "if(selected_muons_plus_pt.size()>0) return selected_muons_minus_pt.at(0); else return -std::numeric_limits<float>::max()")
             ###
@@ -199,48 +201,51 @@ class RDFanalysis():
          
             # Filter at least one candidate
             #.Filter("zed_leptonic_recoil_m.size()>0")
-                   
+            .Filter("  Z_leptonic_m  > 73 &&  Z_leptonic_m  < 120 &&zed_leptonic_recoil_m.size()==1 && zed_leptonic_recoil_m[0]  > 120 &&zed_leptonic_recoil_m[0]  <140 && Z_leptonic_pt  > 5")   
             ###
             #Define MVA 
             ###
             .Define("MVAVec", ROOT.computeModel1, (#muons
-                                                    "selected_muons_delta_max",
-                                                    "selected_muons_delta_min",
+                                                    #"selected_muons_delta_max",
+                                                    #"selected_muons_delta_min",
                                                     #"selected_muons_delta_avg",
                                                     "muon_leading_pt",
-                                                    "muon_leading_px",
-                                                    "muon_leading_py",
-                                                    "muon_leading_pz",
+                                                    #"muon_leading_px",
+                                                    #"muon_leading_py",
+                                                    #"muon_leading_pz",
                                                     "muon_leading_eta",
                                                     #"muon_leading_phi",
                                                     #"muon_leading_y",  
                                                     #"muon_leading_p",  
-                                                    "muon_leading_e",  
+                                                    #"muon_leading_e",  
                                                     #"muon_leading_m",  
-                                                    "muon_leading_theta",
+                                                    #"muon_leading_theta",
                                                     "muon_subleading_pt",
-                                                    "muon_subleading_px",
-                                                    "muon_subleading_py",
-                                                    "muon_subleading_pz",
+                                                    #"muon_subleading_px",
+                                                    #"muon_subleading_py",
+                                                    #"muon_subleading_pz",
                                                     "muon_subleading_eta",
                                                     #"muon_subleading_phi",  
                                                     #"muon_subleading_y",
                                                     #"muon_subleading_p",
-                                                    "muon_subleading_e",
+                                                    #"muon_subleading_e",
                                                     #"muon_subleading_m",
-                                                    "muon_subleading_theta",
+                                                    #"muon_subleading_theta",
+                                                    "muon_acolinearity",
+                                                    "muon_acoplanarity",
                                                     #Zed
                                                     "Z_leptonic_m",      
                                                     "Z_leptonic_pt",     
-                                                    "Z_leptonic_y",      
-                                                    "Z_leptonic_p",      
+                                                    #"Z_leptonic_y",      
+                                                    #"Z_leptonic_p",      
                                                     #"Z_leptonic_e",      
-                                                    "Z_leptonic_px",     
-                                                    "Z_leptonic_py",     
-                                                    "Z_leptonic_pz",     
+                                                    #"Z_leptonic_px",     
+                                                    #"Z_leptonic_py",     
+                                                    #"Z_leptonic_pz",     
                                                     "Z_leptonic_eta",    
-                                                    "Z_leptonic_theta"))  
-                                                    #"Z_leptonic_phi",    
+                                                    #"Z_leptonic_theta",  
+                                                    #"Z_leptonic_phi",  
+            ))
             .Define("MVAScore0", "MVAVec.at(0)")
         )
         return df2

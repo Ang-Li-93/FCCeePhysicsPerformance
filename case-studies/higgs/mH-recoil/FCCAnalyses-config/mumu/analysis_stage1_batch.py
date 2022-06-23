@@ -10,13 +10,13 @@ processList = {
 }
 
 #Mandatory: Production tag when running over EDM4Hep centrally produced events, this points to the yaml files for getting sample statistics
-#prodTag     = "FCCee/spring2021/IDEA/"
+prodTag     = "FCCee/spring2021/IDEA/"
 
 #from userConfig import loc
 #Optional: output directory, default is local dir
 #outputDir="/afs/cern.ch/work/l/lia/private/FCC/MVA/FCCeePhysicsPerformance/case-studies/higgs/mH-recoil/ZH_mumu_recoil_batch/stage1/flatNtuples_test"
-#outputDirEos= "/eos/user/l/lia/FCCee/MVA/flatNtuples/"
-#eosType = "eosuser"
+outputDirEos= "/eos/user/l/lia/FCCee/MVA/flatNtuples/"
+eosType = "eosuser"
 #Optional: ncpus, default is 4
 nCPUS       = 4
 
