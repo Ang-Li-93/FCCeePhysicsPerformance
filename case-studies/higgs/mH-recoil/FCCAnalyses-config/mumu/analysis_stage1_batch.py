@@ -10,19 +10,19 @@ processList = {
 }
 
 #Mandatory: Production tag when running over EDM4Hep centrally produced events, this points to the yaml files for getting sample statistics
-prodTag     = "FCCee/spring2021/IDEA/"
+#prodTag     = "FCCee/spring2021/IDEA/"
 
 #from userConfig import loc
 #Optional: output directory, default is local dir
 #outputDir="/afs/cern.ch/work/l/lia/private/FCC/MVA/FCCeePhysicsPerformance/case-studies/higgs/mH-recoil/ZH_mumu_recoil_batch/stage1/flatNtuples_test"
-outputDirEos= "/eos/user/l/lia/FCCee/MVA/flatNtuples_test/"
-eosType = "eosuser"
+#outputDirEos= "/eos/user/l/lia/FCCee/MVA/flatNtuples/"
+#eosType = "eosuser"
 #Optional: ncpus, default is 4
 nCPUS       = 4
 
 #Optional running on HTCondor, default is False
-#runBatch    = True
-runBatch    = False
+runBatch    = True
+#runBatch    = False
 #Optional batch queue name when running on HTCondor, default is workday
 batchQueue = "longlunch"
 
@@ -33,7 +33,7 @@ userBatchConfig="/afs/cern.ch/work/l/lia/private/FCC/MVA/FCCeePhysicsPerformance
 #USER DEFINED CODE
 import ROOT
 ROOT.gInterpreter.Declare("""
-bool muon_check(ROOT::VecOps::RVec<edm4hep::ReconstructedParticleData> in){
+bool Selection(ROOT::VecOps::RVec<edm4hep::ReconstructedParticleData> in){
     //at least one muon + and one muon - in each event
     int n_muon_plus = 0;
 	int n_muon_minus = 0;
@@ -54,6 +54,7 @@ bool muon_check(ROOT::VecOps::RVec<edm4hep::ReconstructedParticleData> in){
     }
 }
 """)
+#"sel0_MRecoil_Mll_73_120_pTll_05":"  Z_leptonic_m  > 73 &&  Z_leptonic_m  < 120 &&zed_leptonic_recoil_m.size()==1 && zed_leptonic_recoil_m[0]  > 120 &&zed_leptonic_recoil_m[0]  <140 && Z_leptonic_pt  > 5",
 #Mandatory: RDFanalysis class where the use defines the operations on the TTree
 class RDFanalysis():
 
@@ -164,8 +165,10 @@ class RDFanalysis():
             .Define("muon_subleading_e",  "return sorted_muons_e.at(1)")
             .Define("muon_subleading_m",  "return sorted_muons_m.at(1)")
             .Define("muon_subleading_theta",  "return sorted_muons_theta.at(1)")
-            .Define("muon_acolinearity", "HiggsTools::acolinearity(sorted_muons)")
-            .Define("muon_acoplanarity", "HiggsTools::acoplanarity(sorted_muons)") 
+            .Define("Muon_acolinearity", "HiggsTools::acolinearity(sorted_muons)")
+            .Define("Muon_acoplanarity", "HiggsTools::acoplanarity(sorted_muons)") 
+            .Define("muon_acolinearity", "if(Muon_acolinearity.size()>0) return Muon_acolinearity.at(0); else return -std::numeric_limits<float>::max()") 
+            .Define("muon_acoplanarity", "if(Muon_acoplanarity.size()>0) return Muon_acoplanarity.at(0); else return -std::numeric_limits<float>::max()") 
             #.Define("Selected_muons_plus_pt", "if(selected_muons_plus_pt.size()>0) return selected_muons_plus_pt.at(0); else return -std::numeric_limits<float>::max()")
             #.Define("Selected_muons_minus_pt", "if(selected_muons_plus_pt.size()>0) return selected_muons_minus_pt.at(0); else return -std::numeric_limits<float>::max()")
             ###
@@ -218,6 +221,7 @@ class RDFanalysis():
          
             # Filter at least one candidate
             #.Filter("zed_leptonic_recoil_m.size()>0")
+            .Filter("  Z_leptonic_m  > 73 &&  Z_leptonic_m  < 120 &&zed_leptonic_recoil_m.size()==1 && zed_leptonic_recoil_m[0]  > 120 &&zed_leptonic_recoil_m[0]  <140 && Z_leptonic_pt  > 5")
         )
         return df2
 

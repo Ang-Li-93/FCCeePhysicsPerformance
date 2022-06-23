@@ -8,10 +8,10 @@ energy         = 240.0
 collider       = 'FCC-ee'
 inputDir       = '/eos/user/l/lia/FCCee/MVA/flatNtuples/final/'
 #formats        = ['png','pdf']
-#yaxis          = ['lin','log']
-yaxis          = ['log']
-#stacksig       = ['stack','nostack']
-stacksig       = ['nostack']
+yaxis          = ['lin','log']
+#yaxis          = ['log']
+stacksig       = ['stack','nostack']
+#stacksig       = ['nostack']
 formats        = ['pdf']
 #yaxis          = ['lin']
 outdir         = '/eos/user/l/lia/FCCee/MVA/flatNtuples/plots/'
@@ -58,6 +58,7 @@ variables = [  #muons
                "Z_leptonic_phi",    
                #Recoil
                "zed_leptonic_recoil_m",
+               "zed_leptonic_recoil_m_zoom",
                #missing Information
                "missingET_costheta"
             ]
@@ -94,7 +95,7 @@ selections['ZH']   = ["sel0",
                       #"sel0_MRecoil_pTll_15",
                       #"sel0_MRecoil_pTll_10",
                       #"sel0_MRecoil_pTll_05",
-                      #"sel0_MRecoil_Mll_73_120_pTll_05",
+                      "sel0_MRecoil_Mll_73_120_pTll_05",
                       #"sel0_MRecoil_Mll_73_120_pTll_05_MVA02",
                       #"sel0_MRecoil_Mll_73_120_pTll_05_MVA06",
                       ]

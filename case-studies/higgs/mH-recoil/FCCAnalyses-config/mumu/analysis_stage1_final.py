@@ -10,7 +10,8 @@ inputDir  = "/eos/user/l/lia/FCCee/MVA/flatNtuples"
 outputDir  = "/eos/user/l/lia/FCCee/MVA/flatNtuples/final"
 
 ###Link to the dictonary that contains all the cross section informations etc...
-procDict = "FCCee_procDict_spring2021_IDEA.json"
+#procDict = "FCCee_procDict_spring2021_IDEA.json"
+procDict = '/eos/user/l/lia/FCCee/MVA/FCCee_procDict_spring2021_IDEA.json'
 #Add MySample_p8_ee_ZH_ecm240 as it is not an offical process
 procDictAdd={"MySample_p8_ee_ZH_ecm240":{"numberOfEvents": 10000000, "sumOfWeights": 10000000, "crossSection": 0.201868, "kfactor": 1.0, "matchingEfficiency": 1.0}}
 ###Process list that should match the produced files.
@@ -28,7 +29,8 @@ nCPUS = 2
 #produces ROOT TTrees, default is False
 doTree = False
 ###Dictionnay of the list of cuts. The key is the name of the selection that will be added to the output file
-cutList = {"sel0":"return true;",
+cutList = { "sel0":"return true;",
+            "sel0_MRecoil_Mll_73_120_pTll_05":"  Z_leptonic_m  > 73 &&  Z_leptonic_m  < 120 &&zed_leptonic_recoil_m.size()==1 && zed_leptonic_recoil_m[0]  > 120 &&zed_leptonic_recoil_m[0]  <140 && Z_leptonic_pt  > 5",
             }
 
 
@@ -85,6 +87,7 @@ histoList = {
     "Z_leptonic_phi":{"name":"Z_leptonic_phi","title":"Z_leptonic_phi","bin":100,"xmin":-5,"xmax":5},
     #Recoil
     "zed_leptonic_recoil_m":{"name":"zed_leptonic_recoil_m","title":"Z leptonic recoil [GeV]","bin":100,"xmin":0,"xmax":200},
+    "zed_leptonic_recoil_m_zoom":{"name":"zed_leptonic_recoil_m","title":"Z leptonic recoil [GeV]","bin":100,"xmin":120,"xmax":140}, 
     #missing Informations
     "missingET_costheta":{"name":"missingET_costheta","title":"cos#theta_{missing}","bin":200,"xmin":-1,"xmax":1}      
 
