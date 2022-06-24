@@ -260,7 +260,6 @@ class RDFanalysis():
             "gen_mass_mumu",
             "gen_pt_ZH",
             "gen_mass_ZH", 
-            'missingET_costheta', 
             #muons
             "selected_muons_delta_max",
             "selected_muons_delta_min",
