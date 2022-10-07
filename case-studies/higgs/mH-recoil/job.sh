@@ -5,4 +5,5 @@ cd /afs/cern.ch/work/l/lia/private/FCC/MVA/FCCeePhysicsPerformance/case-studies/
 source localSetup.sh
 cd /afs/cern.ch/work/l/lia/private/FCC/MVA/FCCeePhysicsPerformance/case-studies/higgs/mH-recoil/FCCAnalyses-config/mumu
 
-python plot_xgb.py --Vars=normal
+#python train_xgb.py --Vars normal
+python plot_xgb.py --Vars normal

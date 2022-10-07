@@ -201,7 +201,7 @@ class RDFanalysis():
          
             # Filter at least one candidate
             #.Filter("zed_leptonic_recoil_m.size()>0")
-            .Filter("  Z_leptonic_m  > 73 &&  Z_leptonic_m  < 120 &&zed_leptonic_recoil_m.size()==1 && zed_leptonic_recoil_m[0]  > 120 &&zed_leptonic_recoil_m[0]  <140 && Z_leptonic_pt  > 5")   
+            .Filter("  Z_leptonic_m  > 73 &&  Z_leptonic_m  < 120 &&zed_leptonic_recoil_m.size()==1 && zed_leptonic_recoil_m[0]  > 110 &&zed_leptonic_recoil_m[0]  <150 && Z_leptonic_pt  > 5")   
             ###
             #Define MVA 
             ###

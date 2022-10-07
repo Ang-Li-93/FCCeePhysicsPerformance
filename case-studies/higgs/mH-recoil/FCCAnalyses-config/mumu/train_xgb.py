@@ -50,15 +50,17 @@ def run(vars):
         #df_gen_sig = tree.arrays(library="pd")
         #N_sig = N_sig + df_gen_sig.iloc[0]["eventsProcessed"]
         N_sig = N_sig + NT_TParam.value
+        print(f"NT_TParam.value = {NT_TParam.value}")
     eff_sig = float(len(df_sig))/N_sig
-    
+    print(f"Number of Signal: {int(N_sig)}")
+    print(f"efficiency of Signal: {eff_sig}")
     #xsec, from http://fcc-physics-events.web.cern.ch/fcc-physics-events/Delphesevents_spring2021_IDEA.php
     xsec = {}
     xsec["mumuH"] = 0.0067643
     xsec["WWmumu"] = 0.25792
     xsec["ZZ"] = 1.35899
     xsec["Zll"] = 5.288
-    xsec["eeZ"] = 0.20736
+    xsec["eeZ"] = 0.10368
     #Efficiency of the pre-selection equirements on each bkg
     eff = {}
     #Number of generated events for each background type
@@ -96,12 +98,13 @@ def run(vars):
     
     xsec_tot_bkg = eff["ZZ"]*xsec["ZZ"] + eff["WWmumu"]*xsec["WWmumu"] + eff["Zll"]*xsec["Zll"] + eff["eeZ"]*xsec["eeZ"]
     for q in bkgs: 
-        print(f"Size of {q} in needed combined sample: {int(N_sig*((eff[q]*xsec[q])/xsec_tot_bkg))}")
-        print(f"Desired original size of the sample {q} is: {int((N_sig*((eff[q]*xsec[q])/xsec_tot_bkg))/eff[q])} have {N[q]}, need {N[q]-int((N_sig*((eff[q]*xsec[q])/xsec_tot_bkg))/eff[q])}")
+        print(f"Size of {q} in needed combined sample: {int(len(df_sig)*((eff[q]*xsec[q])/xsec_tot_bkg))}")
+        print(f"Desired original size of the sample {q} is: {int((len(df_sig)*((eff[q]*xsec[q])/xsec_tot_bkg))/eff[q])} have {N[q]}, need {N[q]-int((len(df_sig)*((eff[q]*xsec[q])/xsec_tot_bkg))/eff[q])}")
     for q in bkgs:
-        df_bkg[q] = df_bkg[q].sample(n=int(N_sig*((eff[q]*xsec[q])/xsec_tot_bkg)),random_state=10,replace=True)
+        df_bkg[q] = df_bkg[q].sample(n=int(len(df_sig)*((eff[q]*xsec[q])/xsec_tot_bkg)),random_state=10,replace=True)
         #print(f"Size of {q} in combined sample: {len(df_bkg[q])}")
-
+    print(f"Number of Signal: {int(N_sig)}")
+    exit(0) 
     #Make a combined background sample according to BFs
     df_bkg_tot = pd.concat((df_bkg[q] for q in bkgs), ignore_index=True)
     #Shuffle the background so it is an even mixture of the modes
@@ -131,7 +134,7 @@ def run(vars):
     y_test  =  y_test.to_numpy() 
     #BDT
     config_dict = {
-            "n_estimators"      : 2000,
+            "n_estimators"      : 250,
             "learning_rate"     : 0.15,
             "max_depth"         : 3,
             'subsample'         : 0.5,
@@ -140,7 +143,7 @@ def run(vars):
             'max_delta_step'    : 0,
             'colsample_bytree'  : 0.5,
             }
-    early_stopping_round = 200
+    early_stopping_round = 25
     # Training
     bdt = xgb.XGBClassifier(n_estimators    =config_dict["n_estimators"],
                             max_depth       =config_dict["max_depth"],

@@ -1,11 +1,11 @@
 #Mandatory: List of processes
 processList = {
-    'wzp6_ee_mumuH_ecm240':{'chunks':5},
-    'p8_ee_WW_mumu_ecm240':{'chunks':5},
-    'wzp6_egamma_eZ_Zmumu_ecm240':{'chunks':5},
-    'wzp6_gammae_eZ_Zmumu_ecm240':{'chunks':5},
+    #'wzp6_ee_mumuH_ecm240':{'chunks':5},
+    #'p8_ee_WW_mumu_ecm240':{'chunks':5},
+    #'wzp6_egamma_eZ_Zmumu_ecm240':{'chunks':5},
+    #'wzp6_gammae_eZ_Zmumu_ecm240':{'chunks':5},
     'wzp6_ee_mumu_ecm240':{'chunks':5},
-    'p8_ee_ZZ_ecm240':{'chunks':5}
+    #'p8_ee_ZZ_ecm240':{'chunks':5}
     #'p8_ee_ZH_ecm240':{'fraction':0.02}
 }
 
@@ -221,7 +221,7 @@ class RDFanalysis():
          
             # Filter at least one candidate
             #.Filter("zed_leptonic_recoil_m.size()>0")
-            .Filter("  Z_leptonic_m  > 73 &&  Z_leptonic_m  < 120 &&zed_leptonic_recoil_m.size()==1 && zed_leptonic_recoil_m[0]  > 120 &&zed_leptonic_recoil_m[0]  <140 && Z_leptonic_pt  > 5")
+            .Filter("  Z_leptonic_m  > 73 &&  Z_leptonic_m  < 120 &&zed_leptonic_recoil_m.size()==1 && zed_leptonic_recoil_m[0]  > 110 &&zed_leptonic_recoil_m[0]  <150 && Z_leptonic_pt  > 5")
         )
         return df2
 

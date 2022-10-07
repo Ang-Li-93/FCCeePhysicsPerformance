@@ -9,7 +9,7 @@ loc.DATA = loc.ROOT+'data'
 loc.CSV = loc.DATA+'/csv'
 loc.PKL = loc.DATA+'/pkl'
 loc.ROOTFILES = loc.DATA+'/ROOT'
-loc.PLOTS = loc.OUT+'plots_test'
+loc.PLOTS = loc.OUT+'plots'
 loc.TEX = loc.OUT+'tex'
 loc.JSON = loc.OUT+'json'
 
@@ -17,7 +17,7 @@ loc.JSON = loc.OUT+'json'
 loc.EOS = "/eos/home-l/lia/FCCee/MVA"
 
 #Output BDT model location - used in official sample production to assign MVA weights
-loc.BDT = f"{loc.EOS}/BDT_test"
+loc.BDT = f"{loc.EOS}/BDT"
 
 #Loaction of prod_04 tuples used in analysis
 loc.PROD = f"{loc.EOS}"
@@ -34,42 +34,44 @@ loc.ANALYSIS = f"{loc.PROD}/Analysis_stage2/"
 #First stage BDT including event-level vars
 train_vars = [
                 #muons
-                "selected_muons_delta_max",
-                "selected_muons_delta_min",
+                #"selected_muons_delta_max",
+                #"selected_muons_delta_min",
                 #"selected_muons_delta_avg",
                 "muon_leading_pt",
-                "muon_leading_px",
-                "muon_leading_py",
-                "muon_leading_pz",
+                #"muon_leading_px",
+                #"muon_leading_py",
+                #"muon_leading_pz",
                 "muon_leading_eta",
                 #"muon_leading_phi",
                 #"muon_leading_y",  
                 #"muon_leading_p",  
-                "muon_leading_e",  
+                #"muon_leading_e",  
                 #"muon_leading_m",  
-                "muon_leading_theta",
+                #"muon_leading_theta",
                 "muon_subleading_pt",
-                "muon_subleading_px",
-                "muon_subleading_py",
-                "muon_subleading_pz",
+                #"muon_subleading_px",
+                #"muon_subleading_py",
+                #"muon_subleading_pz",
                 "muon_subleading_eta",
                 #"muon_subleading_phi",  
                 #"muon_subleading_y",
                 #"muon_subleading_p",
-                "muon_subleading_e",
+                #"muon_subleading_e",
                 #"muon_subleading_m",
-                "muon_subleading_theta",
+                #"muon_subleading_theta",
+                "muon_acolinearity",
+                "muon_acoplanarity",
                 #Zed
                 "Z_leptonic_m",      
                 "Z_leptonic_pt",     
-                "Z_leptonic_y",      
-                "Z_leptonic_p",      
+                #"Z_leptonic_y",      
+                #"Z_leptonic_p",      
                 #"Z_leptonic_e",      
-                "Z_leptonic_px",     
-                "Z_leptonic_py",     
-                "Z_leptonic_pz",     
+                #"Z_leptonic_px",     
+                #"Z_leptonic_py",     
+                #"Z_leptonic_pz",     
                 "Z_leptonic_eta",    
-                "Z_leptonic_theta",  
+                #"Z_leptonic_theta",  
                 #"Z_leptonic_phi",    
               ]
 

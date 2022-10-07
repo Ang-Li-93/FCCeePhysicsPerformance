@@ -36,7 +36,7 @@ prodTag     = "FCCee/spring2021/IDEA/"
 #from userConfig import loc
 #Optional: output directory, default is local dir
 #outputDir="/afs/cern.ch/work/l/lia/private/FCC/MVA/FCCeePhysicsPerformance/case-studies/higgs/mH-recoil/ZH_mumu_recoil_batch/stage1/flatNtuples"
-outputDirEos= "/eos/user/l/lia/FCCee/MVA/flatNtuples_stage2_test/"
+outputDirEos= "/eos/user/l/lia/FCCee/MVA/flatNtuples_stage2/"
 eosType = "eosuser"
 #Optional: ncpus, default is 4
 nCPUS       = 4
@@ -45,7 +45,7 @@ nCPUS       = 4
 runBatch    = True
 #runBatch    = False
 #Optional batch queue name when running on HTCondor, default is workday
-batchQueue = "longlunch"
+batchQueue = "workday"
 
 #Optional computing account when running on HTCondor, default is group_u_FCC.local_gen
 compGroup = "group_u_FCC.local_gen"
@@ -56,7 +56,7 @@ userBatchConfig="/afs/cern.ch/work/l/lia/private/FCC/MVA/FCCeePhysicsPerformance
 import ROOT
 ROOT.gInterpreter.ProcessLine('''
     TMVA::Experimental::RBDT<> bdt("ZH_Recoil_BDT", "/eos/user/l/lia/FCCee/MVA/BDT/xgb_bdt_normal.root");
-    computeModel1 = TMVA::Experimental::Compute<25, float>(bdt);
+    computeModel1 = TMVA::Experimental::Compute<9, float>(bdt);
     ''')
 
 ROOT.gInterpreter.Declare("""
@@ -154,8 +154,10 @@ class RDFanalysis():
             .Define("muon_subleading_e",  "return sorted_muons_e.at(1)")
             .Define("muon_subleading_m",  "return sorted_muons_m.at(1)")
             .Define("muon_subleading_theta",  "return sorted_muons_theta.at(1)")
-
-
+            .Define("Muon_acolinearity", "HiggsTools::acolinearity(sorted_muons)")
+            .Define("Muon_acoplanarity", "HiggsTools::acoplanarity(sorted_muons)") 
+            .Define("muon_acolinearity", "if(Muon_acolinearity.size()>0) return Muon_acolinearity.at(0); else return -std::numeric_limits<float>::max()") 
+            .Define("muon_acoplanarity", "if(Muon_acoplanarity.size()>0) return Muon_acoplanarity.at(0); else return -std::numeric_limits<float>::max()") 
             #.Define("Selected_muons_plus_pt", "if(selected_muons_plus_pt.size()>0) return selected_muons_plus_pt.at(0); else return -std::numeric_limits<float>::max()")
             #.Define("Selected_muons_minus_pt", "if(selected_muons_plus_pt.size()>0) return selected_muons_minus_pt.at(0); else return -std::numeric_limits<float>::max()")
             ###
@@ -197,43 +199,46 @@ class RDFanalysis():
             #Define MVA 
             ###
             .Define("MVAVec", ROOT.computeModel1, (#muons
-                                                    "selected_muons_delta_max",
-                                                    "selected_muons_delta_min",
+                                                    #"selected_muons_delta_max",
+                                                    #"selected_muons_delta_min",
                                                     #"selected_muons_delta_avg",
                                                     "muon_leading_pt",
-                                                    "muon_leading_px",
-                                                    "muon_leading_py",
-                                                    "muon_leading_pz",
+                                                    #"muon_leading_px",
+                                                    #"muon_leading_py",
+                                                    #"muon_leading_pz",
                                                     "muon_leading_eta",
                                                     #"muon_leading_phi",
                                                     #"muon_leading_y",  
                                                     #"muon_leading_p",  
-                                                    "muon_leading_e",  
+                                                    #"muon_leading_e",  
                                                     #"muon_leading_m",  
-                                                    "muon_leading_theta",
+                                                    #"muon_leading_theta",
                                                     "muon_subleading_pt",
-                                                    "muon_subleading_px",
-                                                    "muon_subleading_py",
-                                                    "muon_subleading_pz",
+                                                    #"muon_subleading_px",
+                                                    #"muon_subleading_py",
+                                                    #"muon_subleading_pz",
                                                     "muon_subleading_eta",
                                                     #"muon_subleading_phi",  
                                                     #"muon_subleading_y",
                                                     #"muon_subleading_p",
-                                                    "muon_subleading_e",
+                                                    #"muon_subleading_e",
                                                     #"muon_subleading_m",
-                                                    "muon_subleading_theta",
+                                                    #"muon_subleading_theta",
+                                                    "muon_acolinearity",
+                                                    "muon_acoplanarity",
                                                     #Zed
                                                     "Z_leptonic_m",      
                                                     "Z_leptonic_pt",     
-                                                    "Z_leptonic_y",      
-                                                    "Z_leptonic_p",      
+                                                    #"Z_leptonic_y",      
+                                                    #"Z_leptonic_p",      
                                                     #"Z_leptonic_e",      
-                                                    "Z_leptonic_px",     
-                                                    "Z_leptonic_py",     
-                                                    "Z_leptonic_pz",     
+                                                    #"Z_leptonic_px",     
+                                                    #"Z_leptonic_py",     
+                                                    #"Z_leptonic_pz",     
                                                     "Z_leptonic_eta",    
-                                                    "Z_leptonic_theta"))  
-                                                    #"Z_leptonic_phi",    
+                                                    #"Z_leptonic_theta",  
+                                                    #"Z_leptonic_phi",
+            ))  
             .Define("MVAScore0", "MVAVec.at(0)")
             ###
             #Reconstruct recoil object of ee->Z(mumu)H 
@@ -289,8 +294,9 @@ class RDFanalysis():
             .Define("zed_leptonic_recoil_sqrtsdw", "ReconstructedParticle::recoilBuilder(239.998)(zed_leptonic)")
             .Define("zed_leptonic_recoil_m_sqrtsup", "ReconstructedParticle::get_mass(zed_leptonic_recoil_sqrtsup)")
             .Define("zed_leptonic_recoil_m_sqrtsdw", "ReconstructedParticle::get_mass(zed_leptonic_recoil_sqrtsdw)")
-         
 
+            #Focuse on BDT trained ragion 
+            .Filter("zed_leptonic_m.size()==1 &&  zed_leptonic_m[0]> 73 && zed_leptonic_m[0]  < 120 && zed_leptonic_recoil_m.size()==1 && zed_leptonic_recoil_m[0]  > 120 &&zed_leptonic_recoil_m[0]  <140 && zed_leptonic_pt[0]  > 5")
 
         )
         return df2
@@ -301,7 +307,7 @@ class RDFanalysis():
         branchList = [
             # muons
             "selected_muons_pt", "selected_muons_pt_muscaleup", "selected_muons_pt_muscaledw",
-            "selected_muons_no",
+            "selected_muons_no", "muon_acolinearity", "muon_acoplanarity",
         
             # event variables
             "cosTheta_miss",

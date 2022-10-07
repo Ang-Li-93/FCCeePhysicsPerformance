@@ -27,6 +27,8 @@ variables = [  #muons
                "leptonic_recoil_m_zoom2",
                "leptonic_recoil_m_zoom3",
                "leptonic_recoil_m_zoom4",
+               "leptonic_recoil_m_zoom5",
+               #"leptonic_recoil_m_zoom6",
                "BDT_Score",
                #control vaiables
                "muon_acolinearity",
@@ -37,55 +39,63 @@ variables = [  #muons
 selections = {}
 selections['ZH']   =[ 
                      "sel0", 
-                     "sel_MVA02",
-                     "sel_MVA04", 
-                     "sel_MVA06",
-                     "sel_MVA08",
-                     "sel_MVA09", 
+                     #"sel_MVA02",
+                     #"sel_MVA04", 
+                     #"sel_MVA06",
+                     #"sel_MVA08",
+                     #"sel_MVA09", 
                      "sel_Baseline", 
                      "sel_Baseline_MVA02", 
                      "sel_Baseline_MVA06", 
-                     "sel_APC1",
-                     "sel_APC1_MVA02", 
-                     "sel_APC1_MVA06", 
-                     "sel_APC1_MVA02_mll_80_100", 
-                     "sel_APC1_MVA02_mll_75_100", 
-                     "sel_APC1_MVA02_mll_73_120",
-                     "sel_APC1_MVA02_mll_80_100_nopT", 
-                     "sel_APC1_MVA02_mll_80_100_pT20", 
-                     "sel_APC1_MVA02_mll_80_100_pT10",
-                     "sel0_MRecoil",
-                     "sel0_MRecoil_MVA02",
-                     "sel0_MRecoil_Mll",
-                     "sel0_MRecoil_Mll_MVA02",
-                     "sel0_MRecoil_pTll",
-                     "sel0_MRecoil_pTll_MVA02",
-                     "sel0_Mll",
-                     "sel0_Mll_MVA02",
-                     "sel0_pTll",
-                     "sel0_pTll_MVA02",
-                     "sel0_MRecoil_Mll_80_100",
-                     "sel0_MRecoil_Mll_75_100",
-                     "sel0_MRecoil_Mll_73_120",
-                     "sel0_MRecoil_pTll_20",
-                     "sel0_MRecoil_pTll_15",
-                     "sel0_MRecoil_pTll_10",
-                     "sel0_MRecoil_pTll_05",
+                     #"sel_APC1",
+                     #"sel_APC1_MVA02", 
+                     #"sel_APC1_MVA06", 
+                     #"sel_APC1_MVA02_mll_80_100", 
+                     #"sel_APC1_MVA02_mll_75_100", 
+                     #"sel_APC1_MVA02_mll_73_120",
+                     #"sel_APC1_MVA02_mll_80_100_nopT", 
+                     #"sel_APC1_MVA02_mll_80_100_pT20", 
+                     #"sel_APC1_MVA02_mll_80_100_pT10",
+                     #"sel0_MRecoil",
+                     #"sel0_MRecoil_MVA02",
+                     #"sel0_MRecoil_Mll",
+                     #"sel0_MRecoil_Mll_MVA02",
+                     #"sel0_MRecoil_pTll",
+                     #"sel0_MRecoil_pTll_MVA02",
+                     #"sel0_Mll",
+                     #"sel0_Mll_MVA02",
+                     #"sel0_pTll",
+                     #"sel0_pTll_MVA02",
+                     #"sel0_MRecoil_Mll_80_100",
+                     #"sel0_MRecoil_Mll_75_100",
+                     #"sel0_MRecoil_Mll_73_120",
+                     #"sel0_MRecoil_pTll_20",
+                     #"sel0_MRecoil_pTll_15",
+                     #"sel0_MRecoil_pTll_10",
+                     #"sel0_MRecoil_pTll_05",
                      "sel0_MRecoil_Mll_73_120_pTll_05",                    
+                     "sel0_MRecoil_Mll_73_120_pTll_05_MVA01",
                      "sel0_MRecoil_Mll_73_120_pTll_05_MVA02",
+                     "sel0_MRecoil_Mll_73_120_pTll_05_MVA03",
                      "sel0_MRecoil_Mll_73_120_pTll_05_MVA04",
+                     "sel0_MRecoil_Mll_73_120_pTll_05_MVA05",
                      "sel0_MRecoil_Mll_73_120_pTll_05_MVA06",
+                     "sel0_MRecoil_Mll_73_120_pTll_05_MVA07",
                      "sel0_MRecoil_Mll_73_120_pTll_05_MVA08",
                      "sel0_MRecoil_Mll_73_120_pTll_05_MVA09",
-                     "sel_MVA02_costhetamiss",
-                     "sel_MVA04_costhetamiss",
-                     "sel_MVA06_costhetamiss",
-                     "sel_MVA08_costhetamiss",
-                     "sel_MVA09_costhetamiss",
+                     #"sel_MVA02_costhetamiss",
+                     #"sel_MVA04_costhetamiss",
+                     #"sel_MVA06_costhetamiss",
+                     #"sel_MVA08_costhetamiss",
+                     #"sel_MVA09_costhetamiss",
                      "sel0_MRecoil_Mll_73_120_pTll_05_costhetamiss",
+                     "sel0_MRecoil_Mll_73_120_pTll_05_MVA01_costhetamiss",
                      "sel0_MRecoil_Mll_73_120_pTll_05_MVA02_costhetamiss",
+                     "sel0_MRecoil_Mll_73_120_pTll_05_MVA03_costhetamiss",
+                     "sel0_MRecoil_Mll_73_120_pTll_05_MVA04_costhetamiss",
+                     "sel0_MRecoil_Mll_73_120_pTll_05_MVA05_costhetamiss",
                      "sel0_MRecoil_Mll_73_120_pTll_05_MVA06_costhetamiss",
-                     "sel0_MRecoil_Mll_73_120_pTll_05_MVA06_costhetamiss",
+                     "sel0_MRecoil_Mll_73_120_pTll_05_MVA07_costhetamiss",
                      "sel0_MRecoil_Mll_73_120_pTll_05_MVA08_costhetamiss",
                      "sel0_MRecoil_Mll_73_120_pTll_05_MVA09_costhetamiss",
                      "sel_Baseline_no_costhetamiss",
@@ -126,10 +136,14 @@ extralabel["sel0_MRecoil_pTll_20"]            = "sel0_MRecoil_pTll_20"
 extralabel["sel0_MRecoil_pTll_15"]            = "sel0_MRecoil_pTll_15"
 extralabel["sel0_MRecoil_pTll_10"]            = "sel0_MRecoil_pTll_10"
 extralabel["sel0_MRecoil_pTll_05"]            = "sel0_MRecoil_pTll_05"
-extralabel["sel0_MRecoil_Mll_73_120_pTll_05"]       = "sel0_MRecoil_Mll_73_120_pTll_05" 
+extralabel["sel0_MRecoil_Mll_73_120_pTll_05"]       = "sel0_MRecoil_Mll_73_120_pTll_05"
+extralabel["sel0_MRecoil_Mll_73_120_pTll_05_MVA01"] = "sel0_MRecoil_Mll_73_120_pTll_05_MVA01"
 extralabel["sel0_MRecoil_Mll_73_120_pTll_05_MVA02"] = "sel0_MRecoil_Mll_73_120_pTll_05_MVA02"
+extralabel["sel0_MRecoil_Mll_73_120_pTll_05_MVA03"] = "sel0_MRecoil_Mll_73_120_pTll_05_MVA03" 
 extralabel["sel0_MRecoil_Mll_73_120_pTll_05_MVA04"] = "sel0_MRecoil_Mll_73_120_pTll_05_MVA04"
+extralabel["sel0_MRecoil_Mll_73_120_pTll_05_MVA05"] = "sel0_MRecoil_Mll_73_120_pTll_05_MVA05"
 extralabel["sel0_MRecoil_Mll_73_120_pTll_05_MVA06"] = "sel0_MRecoil_Mll_73_120_pTll_05_MVA06"
+extralabel["sel0_MRecoil_Mll_73_120_pTll_05_MVA07"] = "sel0_MRecoil_Mll_73_120_pTll_05_MVA07"
 extralabel["sel0_MRecoil_Mll_73_120_pTll_05_MVA08"] = "sel0_MRecoil_Mll_73_120_pTll_05_MVA08"
 extralabel["sel0_MRecoil_Mll_73_120_pTll_05_MVA09"] = "sel0_MRecoil_Mll_73_120_pTll_05_MVA09"
 extralabel["sel_MVA02_costhetamiss"]            = "sel_MVA02_costhetamiss" 
@@ -138,9 +152,13 @@ extralabel["sel_MVA06_costhetamiss"]            = "sel_MVA06_costhetamiss"
 extralabel["sel_MVA08_costhetamiss"]            = "sel_MVA08_costhetamiss"
 extralabel["sel_MVA09_costhetamiss"]            = "sel_MVA09_costhetamiss"
 extralabel["sel0_MRecoil_Mll_73_120_pTll_05_costhetamiss"]        = "sel0_MRecoil_Mll_73_120_pTll_05_costhetamiss" 
+extralabel["sel0_MRecoil_Mll_73_120_pTll_05_MVA01_costhetamiss"]  = "sel0_MRecoil_Mll_73_120_pTll_05_MVA01_costhetamiss" 
 extralabel["sel0_MRecoil_Mll_73_120_pTll_05_MVA02_costhetamiss"]  = "sel0_MRecoil_Mll_73_120_pTll_05_MVA02_costhetamiss" 
-extralabel["sel0_MRecoil_Mll_73_120_pTll_05_MVA06_costhetamiss"]  = "sel0_MRecoil_Mll_73_120_pTll_05_MVA04_costhetamiss"
+extralabel["sel0_MRecoil_Mll_73_120_pTll_05_MVA03_costhetamiss"]  = "sel0_MRecoil_Mll_73_120_pTll_05_MVA03_costhetamiss" 
+extralabel["sel0_MRecoil_Mll_73_120_pTll_05_MVA04_costhetamiss"]  = "sel0_MRecoil_Mll_73_120_pTll_05_MVA04_costhetamiss" 
+extralabel["sel0_MRecoil_Mll_73_120_pTll_05_MVA05_costhetamiss"]  = "sel0_MRecoil_Mll_73_120_pTll_05_MVA05_costhetamiss" 
 extralabel["sel0_MRecoil_Mll_73_120_pTll_05_MVA06_costhetamiss"]  = "sel0_MRecoil_Mll_73_120_pTll_05_MVA06_costhetamiss"
+extralabel["sel0_MRecoil_Mll_73_120_pTll_05_MVA07_costhetamiss"]  = "sel0_MRecoil_Mll_73_120_pTll_05_MVA07_costhetamiss"
 extralabel["sel0_MRecoil_Mll_73_120_pTll_05_MVA08_costhetamiss"]  = "sel0_MRecoil_Mll_73_120_pTll_05_MVA08_costhetamiss"
 extralabel["sel0_MRecoil_Mll_73_120_pTll_05_MVA09_costhetamiss"]  = "sel0_MRecoil_Mll_73_120_pTll_05_MVA09_costhetamiss"
 extralabel["sel_Baseline_no_costhetamiss"]      = "sel_Baseline_no_costhetamiss"   
