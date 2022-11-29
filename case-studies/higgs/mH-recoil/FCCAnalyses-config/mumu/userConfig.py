@@ -1,11 +1,11 @@
 import os
 #repo = os.getenv('PWD')
-repo = "/afs/cern.ch/work/l/lia/private/FCC/MVA/FCCeePhysicsPerformance/case-studies/higgs/mH-recoil"
+repo = "/afs/cern.ch/work/l/lia/private/FCC/MVA_Final/FCCeePhysicsPerformance/case-studies/higgs/mH-recoil"
 #repo can be changed, but by default writes locally
 class loc : pass
 loc.ROOT = repo+'/'
-loc.OUT = loc.ROOT+'output_trained/'
-loc.DATA = loc.ROOT+'data'
+loc.OUT = loc.ROOT+'output_trained_110_150/'
+loc.DATA = loc.ROOT+'data_110_150'
 loc.CSV = loc.DATA+'/csv'
 loc.PKL = loc.DATA+'/pkl'
 loc.ROOTFILES = loc.DATA+'/ROOT'
@@ -14,16 +14,16 @@ loc.TEX = loc.OUT+'tex'
 loc.JSON = loc.OUT+'json'
 
 #EOS location for files used in analysis
-loc.EOS = "/eos/home-l/lia/FCCee/MVA"
+loc.EOS = "/eos/home-l/lia/FCCee/MVA_Final"
 
 #Output BDT model location - used in official sample production to assign MVA weights
-loc.BDT = f"{loc.EOS}/BDT"
+loc.BDT = f"{loc.EOS}/BDT_110_150"
 
 #Loaction of prod_04 tuples used in analysis
 loc.PROD = f"{loc.EOS}"
 
 #Samples for first stage BDT training
-loc.TRAIN = f"{loc.PROD}/flatNtuples"
+loc.TRAIN = f"{loc.PROD}/MVANtuples_110_150"
 
 #Samples for second stage training
 loc.TRAIN2 = f"{loc.PROD}/Training_4stage2/"

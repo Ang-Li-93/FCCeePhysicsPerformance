@@ -1,9 +1,9 @@
 #python examples/FCCee/higgs/mH-recoil/mumu/finalSel.py
 #Input directory where the files produced at the pre-selection level are
-inputDir  = "/eos/user/l/lia/FCCee/MVA/flatNtuples_stage2"
+inputDir  = "/eos/user/l/lia/FCCee/MVA_Final/Ntuples_FitInput"
 
 #Input directory where the files produced at the pre-selection level are
-outputDir  = "/eos/user/l/lia/FCCee/MVA/flatNtuples_stage2/final"
+outputDir  = "/eos/user/l/lia/FCCee/MVA_Final/Ntuples_FitInput/final"
 
 ###Link to the dictonary that contains all the cross section informations etc...
 procDict = "FCCee_procDict_spring2021_IDEA.json"

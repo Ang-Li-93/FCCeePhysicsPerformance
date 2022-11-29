@@ -93,7 +93,7 @@ if __name__ == "__main__":
   var = 'leptonic_recoil_m_zoom5'
   #var = 'mz'
   #var = 'zed_leptonic_recoil_m'
-  baseDir = "/eos/user/l/lia/FCCee/MVA/trainedNtuples/final"
+  baseDir = "/eos/user/l/lia/FCCee/MVA_Final/trainedNtuples_analysis_samples_110_150/final"
   #baseDir = "/eos/user/l/lia/FCCee/MVA/flatNtuples_stage2/final"
   #process_list=['wzp6_gaga_mumu_60_ecm240','wzp6_gaga_tautau_60_ecm240','wzp6_gammae_eZ_Zmumu_ecm240','wzp6_egamma_eZ_Zmumu_ecm240','p8_ee_Zqq_ecm240','p8_ee_Zll_ecm240','p8_ee_ZZ_ecm240','p8_ee_WW_mumu_ecm240','wzp6_ee_mumuH_ecm240','wzp6_ee_tautauH_ecm240','wzp6_ee_qqH_ecm240','wzp6_ee_nunuH_ecm240','wzp6_ee_eeH_ecm240']
   intLumi        = 5.0e+06 #in pb-1

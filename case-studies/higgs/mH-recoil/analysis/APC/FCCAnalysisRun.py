@@ -373,7 +373,8 @@ def sendToBatch(rdfModule, chunkList, process, analysisFile):
 
         subprocess.getstatusoutput('chmod 777 %s'%(frunname))
         frun.write('#!/bin/bash\n')
-        frun.write('source /cvmfs/sw.hsf.org/key4hep/setup.sh\n')
+        #frun.write('source /cvmfs/sw.hsf.org/key4hep/setup.sh\n')
+        frun.write('source /cvmfs/sw.hsf.org/spackages6/key4hep-stack/2022-10-19/x86_64-centos7-gcc11.2.0-opt/klf65/setup.sh\n')
         frun.write('export PYTHONPATH=$LOCAL_DIR:$PYTHONPATH\n')
         frun.write('export LD_LIBRARY_PATH=$LOCAL_DIR/install/lib:$LD_LIBRARY_PATH\n')
         frun.write('export ROOT_INCLUDE_PATH=$LOCAL_DIR/install/include/FCCAnalyses:$ROOT_INCLUDE_PATH\n')

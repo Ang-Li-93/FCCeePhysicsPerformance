@@ -54,6 +54,7 @@ def run(vars):
     eff_sig = float(len(df_sig))/N_sig
     print(f"Number of Signal: {int(N_sig)}")
     print(f"efficiency of Signal: {eff_sig}")
+    df_sig = df_sig.sample(n=int(0.9*len(df_sig)),random_state=10)
     #xsec, from http://fcc-physics-events.web.cern.ch/fcc-physics-events/Delphesevents_spring2021_IDEA.php
     xsec = {}
     xsec["mumuH"] = 0.0067643
@@ -103,8 +104,15 @@ def run(vars):
     for q in bkgs:
         df_bkg[q] = df_bkg[q].sample(n=int(len(df_sig)*((eff[q]*xsec[q])/xsec_tot_bkg)),random_state=10,replace=True)
         #print(f"Size of {q} in combined sample: {len(df_bkg[q])}")
+    print(f"__________________________________________________________")
+    print(f"Input number of events:")
+    print(f"Number of Signal mumuH: {int(len(df_sig))}")
+    for q in bkgs:
+      print(f"Number of background {q}: {int(len(df_bkg[q]))}")
+    print(f"__________________________________________________________")
+    
     print(f"Number of Signal: {int(N_sig)}")
-    exit(0) 
+    #exit(0) 
     #Make a combined background sample according to BFs
     df_bkg_tot = pd.concat((df_bkg[q] for q in bkgs), ignore_index=True)
     #Shuffle the background so it is an even mixture of the modes
