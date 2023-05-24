@@ -889,4 +889,103 @@ float HiggsTools::Higgsstrahlungness(float mll, float mrecoil) {
   return chi2;
 }
 
+// calculate the number of foward leptons
+HiggsTools::polarAngleCategorization::polarAngleCategorization(float arg_thetaMin, float arg_thetaMax) : thetaMin(arg_thetaMin), thetaMax(arg_thetaMax) {};
+int polarAngleCategorization::operator() (ROOT::VecOps::RVec<edm4hep::ReconstructedParticleData> in) {
+    
+    int nFwd = 0; // number of forward leptons
+    for (size_t i = 0; i < in.size(); ++i) {
+        
+        auto & p = in[i];
+        TLorentzVector lv;
+        lv.SetXYZM(p.momentum.x, p.momentum.y, p.momentum.z, p.mass);
+        if(lv.Theta() < thetaMin || lv.Theta() > thetaMax) nFwd += 1;
+    }
+    return nFwd;
+}
 
+// deltaR between two reco particles, based on eta
+float HiggsTools::deltaR(ROOT::VecOps::RVec<edm4hep::ReconstructedParticleData> in) {
+    if(in.size() != 2) return -1;
+    
+    TLorentzVector tlv1;
+    tlv1.SetPxPyPzE(in.at(0).momentum.x, in.at(0).momentum.y, in.at(0).momentum.z, in.at(0).energy);
+
+    TLorentzVector tlv2;
+    tlv2.SetPxPyPzE(in.at(1).momentum.x, in.at(1).momentum.y, in.at(1).momentum.z, in.at(1).energy);
+    
+    return std::sqrt(std::pow(tlv1.Eta()-tlv2.Eta(), 2) + std::pow(tlv1.Phi()-tlv2.Phi(), 2));
+}
+
+// returns the gen particles with given PDGID (absolute) that have the e+/e- as parent, i.e. from prompt
+// in Whizard, the prompt leptons from the collision have two parents, the electron and positron
+ROOT::VecOps::RVec<edm4hep::ReconstructedParticleData> HiggsTools::whizard_zh_select_prompt_leptons(
+                                                        ROOT::VecOps::RVec<edm4hep::ReconstructedParticleData> in, 
+                                                        ROOT::VecOps::RVec<int> recind, 
+                                                        ROOT::VecOps::RVec<int> mcind, 
+                                                        ROOT::VecOps::RVec<edm4hep::ReconstructedParticleData> reco, 
+                                                        ROOT::VecOps::RVec<edm4hep::MCParticleData> mc, 
+                                                        ROOT::VecOps::RVec<int> parents, 
+                                                        ROOT::VecOps::RVec<int> daugther) {
+    ROOT::VecOps::RVec<edm4hep::ReconstructedParticleData> result;
+    for (size_t i = 0; i < in.size(); ++i) {
+        int track_index = in[i].tracks_begin;
+        int mc_index = FCCAnalyses::ReconstructedParticle2MC::getTrack2MC_index(track_index, recind, mcind, reco);
+        if(HiggsTools::whizard_zh_from_prompt(mc_index, mc, parents)) {
+            result.emplace_back(in[i]);
+        }
+    }
+    return result;
+}
+
+// for a given MC index, it returns whether or not one of these muons come (indirectly) from a Higgs decay
+bool HiggsTools::whizard_zh_from_prompt(int i, ROOT::VecOps::RVec<edm4hep::MCParticleData> in, ROOT::VecOps::RVec<int> ind) {
+
+    bool ret = false;
+    // i = index of a MC particle in the Particle block
+    // in = the Particle collection
+    // ind = the block with the indices for the parents, Particle#0.index
+
+    // returns whether the particle i comes from the chain containing the Higgs
+
+    if ( i < 0 || i >= in.size() ) return ret;
+
+    int db = in.at(i).parents_begin;
+    int de = in.at(i).parents_end;
+  
+    //std::cout << "Chain for " << in.at(i).PDG << std::endl;
+    //std::cout << "Chain for " << in.at(i).PDG << std::endl;
+    //std::cout << "Chain for idx=" << i << " with PDG=" << in.at(i).PDG << " having db=" << db << " and de=" << de << std::endl;
+    
+
+    if(db == de) return true; // top of tree
+
+   
+    for(int id = db; id < de; id++) { // loop over all parents
+
+        int iparent = ind.at(id);
+        //std::cout << " Analyze parent idx=" << iparent << " PDG=" << in.at(iparent).PDG << std::endl;
+        
+        //if(std::abs(in.at(iparent).PDG) == 11) ret = true; // if prompt
+        if(iparent == 0) return true;
+        else if(std::abs(in.at(iparent).PDG) == 25) ret = false; // non prompt, from Higgs decays
+        else ret = HiggsTools::whizard_zh_from_prompt(iparent, in, ind); // otherwise go up in the decay tree
+    }
+    
+    return ret;
+}
+
+// perturb the momentum scale with a given constant
+HiggsTools::lepton_momentum_scale::lepton_momentum_scale(float arg_scaleunc) : scaleunc(arg_scaleunc) {};
+ROOT::VecOps::RVec<edm4hep::ReconstructedParticleData> lepton_momentum_scale::operator() (ROOT::VecOps::RVec<edm4hep::ReconstructedParticleData> in) {
+    ROOT::VecOps::RVec<edm4hep::ReconstructedParticleData> result;
+    result.reserve(in.size());
+    for (size_t i = 0; i < in.size(); ++i) {
+        auto & p = in[i];
+        p.momentum.x = p.momentum.x*(1. + scaleunc);
+        p.momentum.y = p.momentum.y*(1. + scaleunc);
+        p.momentum.z = p.momentum.z*(1. + scaleunc);
+        result.emplace_back(p);
+    }
+    return result;
+} 

@@ -111,6 +111,21 @@ namespace HiggsTools{
     ROOT::VecOps::RVec<double>  operator() ( ROOT::VecOps::RVec<edm4hep::ReconstructedParticleData> recop, 
                                              ROOT::VecOps::RVec<edm4hep::ReconstructedParticleData> rp) ;
   };
+
+  // calculate the number of foward leptons
+  struct polarAngleCategorization {
+    polarAngleCategorization(float arg_thetaMin, float arg_thetaMax);
+    float thetaMin = 0;
+    float thetaMax = 5;
+    int operator() (ROOT::VecOps::RVec<edm4hep::ReconstructedParticleData> in);
+  };
+
+  // perturb the momentum scale with a given constant
+  struct lepton_momentum_scale {
+    lepton_momentum_scale(float arg_scaleunc);
+    float scaleunc = 1.;
+    ROOT::VecOps::RVec<edm4hep::ReconstructedParticleData> operator() (ROOT::VecOps::RVec<edm4hep::ReconstructedParticleData> in);
+  };
 	/// return the costheta of the input ReconstructedParticles
 	ROOT::VecOps::RVec<float> get_cosTheta(ROOT::VecOps::RVec<edm4hep::ReconstructedParticleData> in);
 
@@ -150,5 +165,16 @@ namespace HiggsTools{
   
   //Higgstrahlungness
   float Higgsstrahlungness(float mll, float mrecoil);
+  float deltaR(ROOT::VecOps::RVec<edm4hep::ReconstructedParticleData> in); 
+
+  ROOT::VecOps::RVec<edm4hep::ReconstructedParticleData> whizard_zh_select_prompt_leptons(ROOT::VecOps::RVec<edm4hep::ReconstructedParticleData> in, 
+                                                                                          ROOT::VecOps::RVec<int> recind, 
+                                                                                          ROOT::VecOps::RVec<int> mcind, 
+                                                                                          ROOT::VecOps::RVec<edm4hep::ReconstructedParticleData> reco, 
+                                                                                          ROOT::VecOps::RVec<edm4hep::MCParticleData> mc, 
+                                                                                          ROOT::VecOps::RVec<int> parents, 
+                                                                                          ROOT::VecOps::RVec<int> daugther);
+
+  bool whizard_zh_from_prompt(int i, ROOT::VecOps::RVec<edm4hep::MCParticleData> in, ROOT::VecOps::RVec<int> ind);
 }
 #endif
