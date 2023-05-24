@@ -43,9 +43,9 @@ def Z(S, B):
     return -100
   return S/sqrt(S+B)
 
-def Significance(df_s,df_b, func=Z0, score_range=(0, 1), nbins=50):
-  S0 = np.sum(df_s.loc[df_s.index,'weight'])
-  B0 = np.sum(df_b.loc[df_b.index,'weight']) 
+def Significance(df_s,df_b, score_column = 'BDTscore', func=Z0, score_range=(0, 1), nbins=50):
+  S0 = np.sum(df_s.loc[df_s.index,'norm_weight'])
+  B0 = np.sum(df_b.loc[df_b.index,'norm_weight']) 
   print('initial: S0={:.2f}, B0={:.2f}'.format(S0, B0))
   print('inclusive Z: {:.2f}'.format(func(S0, B0)))
 
@@ -55,10 +55,10 @@ def Significance(df_s,df_b, func=Z0, score_range=(0, 1), nbins=50):
 
   for i in tqdm(range(nbins)):
     xi = score_range[0]+i*wid
-    Si = np.sum(df_s.loc[df_s.query('BDT>='+str(xi)).index,'weight'])
-    Bi = np.sum(df_b.loc[df_b.query('BDT>='+str(xi)).index,'weight'])
+    Si = np.sum(df_s.loc[df_s.query(f'{score_column} >= {str(xi)}').index,'norm_weight'])
+    Bi = np.sum(df_b.loc[df_b.query(f'{score_column} >= {str(xi)}').index,'norm_weight'])
     Zi = func(Si, Bi)
-    if Bi<=11: continue
+    if Bi<0: continue
     if Zi<0: continue
     arr_Z[i]=Zi
           
@@ -66,7 +66,7 @@ def Significance(df_s,df_b, func=Z0, score_range=(0, 1), nbins=50):
   
   return df_Z
 
-def thres_opt(df, func=Z0, n_spliter=2, score_range=(0, 1), nbins=50, precut='test==True',b_scale=1.):
+def thres_opt(df, score_column = 'BDTscore', func=Z0, n_spliter=2, score_range=(0, 1), nbins=50, precut='test==True',b_scale=1.):
   df_s = df.query(precut+' & isSignal==1')
   df_b = df.query(precut+' & isSignal==0')
   S0 = len(df_s.index)
@@ -80,16 +80,16 @@ def thres_opt(df, func=Z0, n_spliter=2, score_range=(0, 1), nbins=50, precut='te
 
   for i in tqdm(range(nbins)):
     xi = score_range[0]+i*wid
-    Si = len(df_s.query('score>='+str(xi)).index)
-    Bi = b_scale*len(df_b.query('score>='+str(xi)).index)
+    Si = len(df_s.query(f'{score_column} >= {str(xi)}').index)
+    Bi = b_scale*len(df_b.query(f'{score_column} >= {str(xi)}').index)
     Zi = func(Si, Bi)
     if Bi<=11: continue
     if Zi<0: continue
 
     for j in range(i):
       xj = score_range[0]+j*wid
-      Sj = len(df_s.query('score>='+str(xj)+' & score<'+str(xi)).index)
-      Bj = b_scale*len(df_b.query('score>='+str(xj)+' & score<'+str(xi)).index)
+      Sj = len(df_s.query(f'{BDTscore} >= {str(xj)} & {BDTscore} < {str(xi)}').index)
+      Bj = b_scale*len(df_b.query(f'{BDTscore} >= {str(xj)} & {BDTscore} < {str(xi)}').index)
       Zj = func(Sj, Bj)
       if Bj<=11: continue
       if Zj<0: continue
