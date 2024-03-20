@@ -913,8 +913,407 @@ float HiggsTools::deltaR(ROOT::VecOps::RVec<edm4hep::ReconstructedParticleData> 
 
     TLorentzVector tlv2;
     tlv2.SetPxPyPzE(in.at(1).momentum.x, in.at(1).momentum.y, in.at(1).momentum.z, in.at(1).energy);
+
+    return tlv1.DeltaR(tlv2); 
+}
+
+float HiggsTools::deltaRPrime(ROOT::VecOps::RVec<edm4hep::ReconstructedParticleData> in) {
+    if(in.size() != 2) return -1;
     
-    return std::sqrt(std::pow(tlv1.Eta()-tlv2.Eta(), 2) + std::pow(tlv1.Phi()-tlv2.Phi(), 2));
+    TLorentzVector tlv1;
+    tlv1.SetPxPyPzE(in.at(0).momentum.x, in.at(0).momentum.y, in.at(0).momentum.z, in.at(0).energy);
+
+    TLorentzVector tlv2;
+    tlv2.SetPxPyPzE(in.at(1).momentum.x, in.at(1).momentum.y, in.at(1).momentum.z, in.at(1).energy);
+
+    float dTheta = abs(tlv1.Theta()-tlv2.Theta());
+    float dPhi = abs(tlv1.DeltaPhi(tlv2));
+    return std::sqrt(dTheta*dTheta + dPhi*dPhi);
+}
+
+// deltaR between two reco particles, based on eta
+float HiggsTools::deltaPhi(ROOT::VecOps::RVec<edm4hep::ReconstructedParticleData> in) {
+    if(in.size() != 2) return -1;
+    
+    TLorentzVector tlv1;
+    tlv1.SetPxPyPzE(in.at(0).momentum.x, in.at(0).momentum.y, in.at(0).momentum.z, in.at(0).energy);
+
+    TLorentzVector tlv2;
+    tlv2.SetPxPyPzE(in.at(1).momentum.x, in.at(1).momentum.y, in.at(1).momentum.z, in.at(1).energy);
+    
+    return abs(tlv1.DeltaPhi(tlv2));
+}
+
+// deltaR between two reco particles, based on eta
+float HiggsTools::deltaTheta(ROOT::VecOps::RVec<edm4hep::ReconstructedParticleData> in) {
+    if(in.size() != 2) return -1;
+    
+    TLorentzVector tlv1;
+    tlv1.SetPxPyPzE(in.at(0).momentum.x, in.at(0).momentum.y, in.at(0).momentum.z, in.at(0).energy);
+
+    TLorentzVector tlv2;
+    tlv2.SetPxPyPzE(in.at(1).momentum.x, in.at(1).momentum.y, in.at(1).momentum.z, in.at(1).energy);
+    
+    return abs(tlv1.Theta()-tlv2.Theta());
+}
+
+// deltaR between two reco particles, based on eta
+float HiggsTools::deltaEta(ROOT::VecOps::RVec<edm4hep::ReconstructedParticleData> in) {
+    if(in.size() != 2) return -1;
+    
+    TLorentzVector tlv1;
+    tlv1.SetPxPyPzE(in.at(0).momentum.x, in.at(0).momentum.y, in.at(0).momentum.z, in.at(0).energy);
+
+    TLorentzVector tlv2;
+    tlv2.SetPxPyPzE(in.at(1).momentum.x, in.at(1).momentum.y, in.at(1).momentum.z, in.at(1).energy);
+
+    return abs(tlv1.Eta()-tlv2.Eta()); 
+}
+
+// minimum between particles
+float HiggsTools::min_deltaR(ROOT::VecOps::RVec<edm4hep::ReconstructedParticleData> in) {
+    if(in.size() < 2) return -1;
+    
+    float result;
+    std::vector<std::vector<int>> pairs; // for each permutation, add the indices of the muons
+    int n = in.size();
+    float min = 9999;
+    if(n > 1) {
+        ROOT::VecOps::RVec<bool> v(n);
+        std::fill(v.end() - 2, v.end(), true); // helper variable for permutations
+        do {
+            std::vector<int> pair;
+            TLorentzVector tlv1;
+            TLorentzVector tlv2;
+            for(int i = 0; i < n; ++i) {
+                if(v[i]) {
+                    pair.push_back(i);
+                }
+            }
+            tlv1.SetXYZM(in[pair[0]].momentum.x, in[pair[0]].momentum.y, in[pair[0]].momentum.z, in[pair[0]].mass);
+            tlv2.SetXYZM(in[pair[1]].momentum.x, in[pair[1]].momentum.y, in[pair[1]].momentum.z, in[pair[1]].mass);
+            float value = tlv1.DeltaR(tlv2);
+            if(value < min) min = value;
+            pairs.push_back(pair);
+        } while(std::next_permutation(v.begin(), v.end()));
+    }
+    else {
+        std::cout << "ERROR: min_deltaR, at least two leptons required." << std::endl;
+        exit(1);
+    }
+    return min;
+}
+
+// minimum between particles
+float HiggsTools::min_deltaRPrime(ROOT::VecOps::RVec<edm4hep::ReconstructedParticleData> in) {
+    if(in.size() < 2) return -1;
+    
+    float result;
+    std::vector<std::vector<int>> pairs; // for each permutation, add the indices of the muons
+    int n = in.size();
+    float min = 9999;
+    if(n > 1) {
+        ROOT::VecOps::RVec<bool> v(n);
+        std::fill(v.end() - 2, v.end(), true); // helper variable for permutations
+        do {
+            std::vector<int> pair;
+            TLorentzVector tlv1;
+            TLorentzVector tlv2;
+            for(int i = 0; i < n; ++i) {
+                if(v[i]) {
+                    pair.push_back(i);
+                }
+            }
+            tlv1.SetXYZM(in[pair[0]].momentum.x, in[pair[0]].momentum.y, in[pair[0]].momentum.z, in[pair[0]].mass);
+            tlv2.SetXYZM(in[pair[1]].momentum.x, in[pair[1]].momentum.y, in[pair[1]].momentum.z, in[pair[1]].mass);
+            float dTheta = abs(tlv1.Theta()-tlv2.Theta());
+            float dPhi = abs(tlv1.DeltaPhi(tlv2));
+            float value = sqrt(dTheta*dTheta + dPhi*dPhi);
+            if(value < min) min = value;
+            pairs.push_back(pair);
+        } while(std::next_permutation(v.begin(), v.end()));
+    }
+    else {
+        std::cout << "ERROR: min_deltaR, at least two leptons required." << std::endl;
+        exit(1);
+    }
+    return min;
+}
+
+// minimum between particles
+float HiggsTools::min_deltaPhi(ROOT::VecOps::RVec<edm4hep::ReconstructedParticleData> in) {
+    if(in.size() < 2) return -1;
+    
+    float result;
+    std::vector<std::vector<int>> pairs; // for each permutation, add the indices of the muons
+    int n = in.size();
+    float min = 9999;
+    if(n > 1) {
+        ROOT::VecOps::RVec<bool> v(n);
+        std::fill(v.end() - 2, v.end(), true); // helper variable for permutations
+        do {
+            std::vector<int> pair;
+            TLorentzVector tlv1;
+            TLorentzVector tlv2;
+            for(int i = 0; i < n; ++i) {
+                if(v[i]) {
+                    pair.push_back(i);
+                }
+            }
+            tlv1.SetXYZM(in[pair[0]].momentum.x, in[pair[0]].momentum.y, in[pair[0]].momentum.z, in[pair[0]].mass);
+            tlv2.SetXYZM(in[pair[1]].momentum.x, in[pair[1]].momentum.y, in[pair[1]].momentum.z, in[pair[1]].mass);
+            float value = abs(tlv1.DeltaPhi(tlv2)); 
+            if(value < min) min = value;
+            pairs.push_back(pair);
+        } while(std::next_permutation(v.begin(), v.end()));
+    }
+    else {
+        std::cout << "ERROR: min_deltaPhi, at least two leptons required." << std::endl;
+        exit(1);
+    }
+    return min;
+}
+
+// minimum between particles
+float HiggsTools::min_deltaTheta(ROOT::VecOps::RVec<edm4hep::ReconstructedParticleData> in) {
+    if(in.size() < 2) return -1;
+    
+    float result;
+    std::vector<std::vector<int>> pairs; // for each permutation, add the indices of the muons
+    int n = in.size();
+    float min = 9999;
+    if(n > 1) {
+        ROOT::VecOps::RVec<bool> v(n);
+        std::fill(v.end() - 2, v.end(), true); // helper variable for permutations
+        do {
+            std::vector<int> pair;
+            TLorentzVector tlv1;
+            TLorentzVector tlv2;
+            for(int i = 0; i < n; ++i) {
+                if(v[i]) {
+                    pair.push_back(i);
+                }
+            }
+            tlv1.SetXYZM(in[pair[0]].momentum.x, in[pair[0]].momentum.y, in[pair[0]].momentum.z, in[pair[0]].mass);
+            tlv2.SetXYZM(in[pair[1]].momentum.x, in[pair[1]].momentum.y, in[pair[1]].momentum.z, in[pair[1]].mass);
+            float value = std::abs(tlv1.Theta()-tlv2.Theta());
+            if(value < min) min = value;
+            pairs.push_back(pair);
+        } while(std::next_permutation(v.begin(), v.end()));
+    }
+    else {
+        std::cout << "ERROR: min_deltaTheta, at least two leptons required." << std::endl;
+        exit(1);
+    }
+    return min;
+}
+
+// minimum between particles
+float HiggsTools::min_deltaEta(ROOT::VecOps::RVec<edm4hep::ReconstructedParticleData> in) {
+    if(in.size() < 2) return -1;
+    
+    float result;
+    std::vector<std::vector<int>> pairs; // for each permutation, add the indices of the muons
+    int n = in.size();
+    float min = 9999;
+    if(n > 1) {
+        ROOT::VecOps::RVec<bool> v(n);
+        std::fill(v.end() - 2, v.end(), true); // helper variable for permutations
+        do {
+            std::vector<int> pair;
+            TLorentzVector tlv1;
+            TLorentzVector tlv2;
+            for(int i = 0; i < n; ++i) {
+                if(v[i]) {
+                    pair.push_back(i);
+                }
+            }
+            tlv1.SetXYZM(in[pair[0]].momentum.x, in[pair[0]].momentum.y, in[pair[0]].momentum.z, in[pair[0]].mass);
+            tlv2.SetXYZM(in[pair[1]].momentum.x, in[pair[1]].momentum.y, in[pair[1]].momentum.z, in[pair[1]].mass);
+            float value = std::abs(tlv1.Eta()-tlv2.Eta());
+            if(value < min) min = value;
+            pairs.push_back(pair);
+        } while(std::next_permutation(v.begin(), v.end()));
+    }
+    else {
+        std::cout << "ERROR: min_deltaTheta, at least two leptons required." << std::endl;
+        exit(1);
+    }
+    return min;
+}
+
+
+//////
+// minimum between particles
+float HiggsTools::max_deltaR(ROOT::VecOps::RVec<edm4hep::ReconstructedParticleData> in) {
+    if(in.size() < 2) return -1;
+    
+    float result;
+    std::vector<std::vector<int>> pairs; // for each permutation, add the indices of the muons
+    int n = in.size();
+    float max = -9999;
+    if(n > 1) {
+        ROOT::VecOps::RVec<bool> v(n);
+        std::fill(v.end() - 2, v.end(), true); // helper variable for permutations
+        do {
+            std::vector<int> pair;
+            TLorentzVector tlv1;
+            TLorentzVector tlv2;
+            for(int i = 0; i < n; ++i) {
+                if(v[i]) {
+                    pair.push_back(i);
+                }
+            }
+            tlv1.SetXYZM(in[pair[0]].momentum.x, in[pair[0]].momentum.y, in[pair[0]].momentum.z, in[pair[0]].mass);
+            tlv2.SetXYZM(in[pair[1]].momentum.x, in[pair[1]].momentum.y, in[pair[1]].momentum.z, in[pair[1]].mass);
+            float value = tlv1.DeltaR(tlv2);
+            if(value > max) max > value;
+            pairs.push_back(pair);
+        } while(std::next_permutation(v.begin(), v.end()));
+    }
+    else {
+        std::cout << "ERROR: min_deltaR, at least two leptons required." << std::endl;
+        exit(1);
+    }
+    return max;
+}
+
+// minimum between particles
+float HiggsTools::max_deltaRPrime(ROOT::VecOps::RVec<edm4hep::ReconstructedParticleData> in) {
+    if(in.size() < 2) return -1;
+    
+    float result;
+    std::vector<std::vector<int>> pairs; // for each permutation, add the indices of the muons
+    int n = in.size();
+    float max = -9999;
+    if(n > 1) {
+        ROOT::VecOps::RVec<bool> v(n);
+        std::fill(v.end() - 2, v.end(), true); // helper variable for permutations
+        do {
+            std::vector<int> pair;
+            TLorentzVector tlv1;
+            TLorentzVector tlv2;
+            for(int i = 0; i < n; ++i) {
+                if(v[i]) {
+                    pair.push_back(i);
+                }
+            }
+            tlv1.SetXYZM(in[pair[0]].momentum.x, in[pair[0]].momentum.y, in[pair[0]].momentum.z, in[pair[0]].mass);
+            tlv2.SetXYZM(in[pair[1]].momentum.x, in[pair[1]].momentum.y, in[pair[1]].momentum.z, in[pair[1]].mass);
+            float dTheta = abs(tlv1.Theta()-tlv2.Theta());
+            float dPhi = abs(tlv1.DeltaPhi(tlv2));
+            float value = sqrt(dTheta*dTheta + dPhi*dPhi);
+            if(value > max) max = value;
+            pairs.push_back(pair);
+        } while(std::next_permutation(v.begin(), v.end()));
+    }
+    else {
+        std::cout << "ERROR: min_deltaR, at least two leptons required." << std::endl;
+        exit(1);
+    }
+    return max;
+}
+
+// minimum between particles
+float HiggsTools::max_deltaPhi(ROOT::VecOps::RVec<edm4hep::ReconstructedParticleData> in) {
+    if(in.size() < 2) return -1;
+    
+    float result;
+    std::vector<std::vector<int>> pairs; // for each permutation, add the indices of the muons
+    int n = in.size();
+    float max = -9999;
+    if(n > 1) {
+        ROOT::VecOps::RVec<bool> v(n);
+        std::fill(v.end() - 2, v.end(), true); // helper variable for permutations
+        do {
+            std::vector<int> pair;
+            TLorentzVector tlv1;
+            TLorentzVector tlv2;
+            for(int i = 0; i < n; ++i) {
+                if(v[i]) {
+                    pair.push_back(i);
+                }
+            }
+            tlv1.SetXYZM(in[pair[0]].momentum.x, in[pair[0]].momentum.y, in[pair[0]].momentum.z, in[pair[0]].mass);
+            tlv2.SetXYZM(in[pair[1]].momentum.x, in[pair[1]].momentum.y, in[pair[1]].momentum.z, in[pair[1]].mass);
+            float value = abs(tlv1.DeltaPhi(tlv2)); 
+            if(value > max) max = value;
+            pairs.push_back(pair);
+        } while(std::next_permutation(v.begin(), v.end()));
+    }
+    else {
+        std::cout << "ERROR: min_deltaPhi, at least two leptons required." << std::endl;
+        exit(1);
+    }
+    return max;
+}
+
+// minimum between particles
+float HiggsTools::max_deltaTheta(ROOT::VecOps::RVec<edm4hep::ReconstructedParticleData> in) {
+    if(in.size() < 2) return -1;
+    
+    float result;
+    std::vector<std::vector<int>> pairs; // for each permutation, add the indices of the muons
+    int n = in.size();
+    float max = -9999;
+    if(n > 1) {
+        ROOT::VecOps::RVec<bool> v(n);
+        std::fill(v.end() - 2, v.end(), true); // helper variable for permutations
+        do {
+            std::vector<int> pair;
+            TLorentzVector tlv1;
+            TLorentzVector tlv2;
+            for(int i = 0; i < n; ++i) {
+                if(v[i]) {
+                    pair.push_back(i);
+                }
+            }
+            tlv1.SetXYZM(in[pair[0]].momentum.x, in[pair[0]].momentum.y, in[pair[0]].momentum.z, in[pair[0]].mass);
+            tlv2.SetXYZM(in[pair[1]].momentum.x, in[pair[1]].momentum.y, in[pair[1]].momentum.z, in[pair[1]].mass);
+            float value = std::abs(tlv1.Theta()-tlv2.Theta());
+            if(value > max) max = value;
+            pairs.push_back(pair);
+        } while(std::next_permutation(v.begin(), v.end()));
+    }
+    else {
+        std::cout << "ERROR: min_deltaTheta, at least two leptons required." << std::endl;
+        exit(1);
+    }
+    return max;
+}
+
+// minimum between particles
+float HiggsTools::max_deltaEta(ROOT::VecOps::RVec<edm4hep::ReconstructedParticleData> in) {
+    if(in.size() < 2) return -1;
+    
+    float result;
+    std::vector<std::vector<int>> pairs; // for each permutation, add the indices of the muons
+    int n = in.size();
+    float max = -9999;
+    if(n > 1) {
+        ROOT::VecOps::RVec<bool> v(n);
+        std::fill(v.end() - 2, v.end(), true); // helper variable for permutations
+        do {
+            std::vector<int> pair;
+            TLorentzVector tlv1;
+            TLorentzVector tlv2;
+            for(int i = 0; i < n; ++i) {
+                if(v[i]) {
+                    pair.push_back(i);
+                }
+            }
+            tlv1.SetXYZM(in[pair[0]].momentum.x, in[pair[0]].momentum.y, in[pair[0]].momentum.z, in[pair[0]].mass);
+            tlv2.SetXYZM(in[pair[1]].momentum.x, in[pair[1]].momentum.y, in[pair[1]].momentum.z, in[pair[1]].mass);
+            float value = std::abs(tlv1.Eta()-tlv2.Eta());
+            if(value > max) max = value;
+            pairs.push_back(pair);
+        } while(std::next_permutation(v.begin(), v.end()));
+    }
+    else {
+        std::cout << "ERROR: min_deltaTheta, at least two leptons required." << std::endl;
+        exit(1);
+    }
+    return max;
 }
 
 // returns the gen particles with given PDGID (absolute) that have the e+/e- as parent, i.e. from prompt
@@ -989,3 +1388,221 @@ ROOT::VecOps::RVec<edm4hep::ReconstructedParticleData> lepton_momentum_scale::op
     }
     return result;
 } 
+
+ROOT::VecOps::RVec<edm4hep::MCParticleData> HiggsTools::get_gen_pdg(ROOT::VecOps::RVec<edm4hep::MCParticleData> mc, int pdgId, bool abs= true) {
+
+   ROOT::VecOps::RVec<edm4hep::MCParticleData> result;
+   for(size_t i = 0; i < mc.size(); ++i) {
+       
+        auto & p = mc[i];
+        if((abs and std::abs(p.PDG) == pdgId) or (not abs and p.PDG == pdgId)) result.emplace_back(p);
+   }
+   return result;
+}
+
+BoostFrame_gen::BoostFrame_gen( float arg_low_energy) : low_energy (arg_low_energy) {};
+ROOT::VecOps::RVec<edm4hep::MCParticleData> HiggsTools::BoostFrame_gen::operator() ( ROOT::VecOps::RVec<edm4hep::MCParticleData> in ) {
+  ROOT::VecOps::RVec<edm4hep::MCParticleData> result;
+
+  // Initialize the initial and final beams
+  TLorentzVector beam1(0, 0, 120, 120);
+  TLorentzVector beam2(0, 0, -120, 120);
+  // To approve in the future
+  TLorentzVector final_beam1(0, 0, -low_energy, low_energy);
+  TLorentzVector final_beam2(0, 0, 480, 480);
+
+  // Calculate the boost vector of the initial and final system
+  TVector3 boost_initial = (beam1 + beam2).BoostVector();
+  TVector3 boost_final = (final_beam1 + final_beam2).BoostVector();
+
+  // Calculate the net boost vector
+  TVector3 net_boost = boost_final - boost_initial;
+
+  beam1.Boost(net_boost);
+  beam2.Boost(net_boost);
+
+  for ( size_t i=0; i < in.size(); ++i) {
+    auto & p = in[i];
+    edm4hep::MCParticleData newp = p;
+    TLorentzVector tlv;
+    tlv.SetXYZM(in.at(i).momentum.x, in.at(i).momentum.y, in.at(i).momentum.z, in.at(i).mass);
+    tlv.Boost(net_boost);
+    newp.momentum.x = tlv.Px();
+    newp.momentum.y = tlv.Py();
+    newp.momentum.z = tlv.Pz();
+    newp.mass = tlv.M();
+    result.push_back( newp );
+  }
+  return result;
+}
+
+
+BoostFrame::BoostFrame( float arg_low_energy) : low_energy (arg_low_energy) {};
+ROOT::VecOps::RVec<edm4hep::ReconstructedParticleData> HiggsTools::BoostFrame::operator() ( ROOT::VecOps::RVec<edm4hep::ReconstructedParticleData> in ) {
+  ROOT::VecOps::RVec<edm4hep::ReconstructedParticleData> result;
+
+  // Initialize the initial and final beams
+  TLorentzVector beam1(0, 0, 120, 120);
+  TLorentzVector beam2(0, 0, -120, 120);
+  // To approve in the future
+  TLorentzVector final_beam1(0, 0, -low_energy, low_energy);
+  TLorentzVector final_beam2(0, 0, 480, 480);
+
+  // Calculate the boost vector of the initial and final system
+  TVector3 boost_initial = (beam1 + beam2).BoostVector();
+  TVector3 boost_final = (final_beam1 + final_beam2).BoostVector();
+
+  // Calculate the net boost vector
+  TVector3 net_boost = boost_final - boost_initial;
+
+  beam1.Boost(net_boost);
+  beam2.Boost(net_boost);
+
+  for ( size_t i=0; i < in.size(); ++i) {
+    auto & p = in[i];
+    edm4hep::ReconstructedParticleData newp = p;
+    TLorentzVector tlv;
+    tlv.SetPxPyPzE(in.at(i).momentum.x, in.at(i).momentum.y, in.at(i).momentum.z, in.at(i).energy);
+    tlv.Boost(net_boost);
+    newp.momentum.x = tlv.Px();
+    newp.momentum.y = tlv.Py();
+    newp.momentum.z = tlv.Pz();
+    newp.energy = tlv.E();
+    result.push_back( newp );
+  }
+  return result;
+}
+
+
+HiggsTools::resonanceBuilder_mass_recoil_boosted::resonanceBuilder_mass_recoil_boosted(float arg_resonance_mass, float arg_recoil_mass, float arg_chi2_recoil_frac, float arg_ecm, bool arg_use_MC_Kinematics) {m_resonance_mass = arg_resonance_mass, m_recoil_mass = arg_recoil_mass, chi2_recoil_frac = arg_chi2_recoil_frac, ecm = arg_ecm, m_use_MC_Kinematics = arg_use_MC_Kinematics;}
+
+ROOT::VecOps::RVec<edm4hep::ReconstructedParticleData> HiggsTools::resonanceBuilder_mass_recoil_boosted::resonanceBuilder_mass_recoil_boosted::operator()(ROOT::VecOps::RVec<edm4hep::ReconstructedParticleData> legs,
+        ROOT::VecOps::RVec<int> recind,
+				ROOT::VecOps::RVec<int> mcind,
+				ROOT::VecOps::RVec<edm4hep::ReconstructedParticleData> reco,
+				ROOT::VecOps::RVec<edm4hep::MCParticleData> mc,
+                ROOT::VecOps::RVec<int> parents,
+                ROOT::VecOps::RVec<int> daugthers)   {
+
+    ROOT::VecOps::RVec<edm4hep::ReconstructedParticleData> result;
+    result.reserve(3);
+    std::vector<std::vector<int>> pairs; // for each permutation, add the indices of the muons
+    int n = legs.size();
+  
+    if(n > 1) {
+        ROOT::VecOps::RVec<bool> v(n);
+        std::fill(v.end() - 2, v.end(), true); // helper variable for permutations
+        do {
+            std::vector<int> pair;
+            edm4hep::ReconstructedParticleData reso;
+            reso.charge = 0;
+            TLorentzVector reso_lv;
+            for(int i = 0; i < n; ++i) {
+                if(v[i]) {
+                    pair.push_back(i);
+                    reso.charge += legs[i].charge;
+                    TLorentzVector leg_lv;
+
+                    if(m_use_MC_Kinematics) { // MC kinematics
+                        int track_index = legs[i].tracks_begin;   // index in the Track array
+                        int mc_index = FCCAnalyses::ReconstructedParticle2MC::getTrack2MC_index(track_index, recind, mcind, reco);
+                        if (mc_index >= 0 && mc_index < mc.size()) {
+                            leg_lv.SetXYZM(mc.at(mc_index).momentum.x, mc.at(mc_index).momentum.y, mc.at(mc_index).momentum.z, mc.at(mc_index).mass);
+                        }
+                    }
+                    else { // reco kinematics
+                         leg_lv.SetXYZM(legs[i].momentum.x, legs[i].momentum.y, legs[i].momentum.z, legs[i].mass);
+                    }
+
+                    reso_lv += leg_lv;
+                }
+            }
+
+            if(reso.charge != 0) continue; // neglect non-zero charge pairs
+            reso.momentum.x = reso_lv.Px();
+            reso.momentum.y = reso_lv.Py();
+            reso.momentum.z = reso_lv.Pz();
+            reso.mass = reso_lv.M();
+            result.emplace_back(reso);
+            pairs.push_back(pair);
+
+        } while(std::next_permutation(v.begin(), v.end()));
+    }
+    else {
+        std::cout << "ERROR: resonanceBuilder_mass_recoil, at least two leptons required." << std::endl;
+        exit(1);
+    }
+  
+    if(result.size() > 1) {
+  
+        ROOT::VecOps::RVec<edm4hep::ReconstructedParticleData> bestReso;
+        
+        int idx_min = -1;
+        float d_min = 9e9;
+        for (int i = 0; i < result.size(); ++i) {
+            
+            // calculate recoil
+            auto recoil_p4 = TLorentzVector(0, 0, 450, 510);
+            TLorentzVector tv1;
+            tv1.SetXYZM(result.at(i).momentum.x, result.at(i).momentum.y, result.at(i).momentum.z, result.at(i).mass);
+            recoil_p4 -= tv1;
+      
+            auto recoil_fcc = edm4hep::ReconstructedParticleData();
+            recoil_fcc.momentum.x = recoil_p4.Px();
+            recoil_fcc.momentum.y = recoil_p4.Py();
+            recoil_fcc.momentum.z = recoil_p4.Pz();
+            recoil_fcc.mass = recoil_p4.M();
+            
+            TLorentzVector tg;
+            tg.SetXYZM(result.at(i).momentum.x, result.at(i).momentum.y, result.at(i).momentum.z, result.at(i).mass);
+        
+            float boost = tg.P();
+            float mass = std::pow(result.at(i).mass - m_resonance_mass, 2); // mass
+            float rec = std::pow(recoil_fcc.mass - m_recoil_mass, 2); // recoil
+            float d = mass + chi2_recoil_frac*rec;
+            
+            if(d < d_min) {
+                d_min = d;
+                idx_min = i;
+            }
+     
+        }
+        if(idx_min > -1) { 
+            bestReso.push_back(result.at(idx_min));
+            auto & l1 = legs[pairs[idx_min][0]];
+            auto & l2 = legs[pairs[idx_min][1]];
+            bestReso.emplace_back(l1);
+            bestReso.emplace_back(l2);
+        }
+        else {
+            std::cout << "ERROR: resonanceBuilder_mass_recoil, no mininum found." << std::endl;
+            exit(1);
+        }
+        return bestReso;
+    }
+    else {
+        auto & l1 = legs[0];
+        auto & l2 = legs[1];
+        result.emplace_back(l1);
+        result.emplace_back(l2);
+        return result;
+    }
+}
+
+HiggsTools::recoilBuilder_boosted::recoilBuilder_boosted(float arg_sqrts) : m_sqrts(arg_sqrts) {};
+ROOT::VecOps::RVec<edm4hep::ReconstructedParticleData>  recoilBuilder_boosted::operator() (ROOT::VecOps::RVec<edm4hep::ReconstructedParticleData> in) {
+  ROOT::VecOps::RVec<edm4hep::ReconstructedParticleData> result;
+  auto recoil_p4 = TLorentzVector(0, 0, 450, 510);
+  for (auto & v1: in) {
+    TLorentzVector tv1;
+    tv1.SetXYZM(v1.momentum.x, v1.momentum.y, v1.momentum.z, v1.mass);
+    recoil_p4 -= tv1;
+  }
+  auto recoil_fcc = edm4hep::ReconstructedParticleData();
+  recoil_fcc.momentum.x = recoil_p4.Px();
+  recoil_fcc.momentum.y = recoil_p4.Py();
+  recoil_fcc.momentum.z = recoil_p4.Pz();
+  recoil_fcc.mass = recoil_p4.M();
+  result.push_back(recoil_fcc);
+  return result;
+};

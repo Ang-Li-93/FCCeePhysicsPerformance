@@ -1,20 +1,20 @@
 import ROOT
 
 # global parameters
-intLumi        = 7.2e+06 #in pb-1
+intLumi        = 2.32e+06 #in pb-1
 ana_tex        = 'e^{+}e^{-} #rightarrow ZH #rightarrow #mu^{+}#mu^{-} + X'
 delphesVersion = '3.4.2'
-energy         = 240.0
+energy         = 365.0
 collider       = 'FCC-ee'
-inputDir       = '/eos/user/l/lia/FCCee/MidTerm/mumu/MVAInputs/final/'
+inputDir       = '/eos/user/l/lia/FCCee/TopHiggs/mumu/MVAInputs/final/'
 #formats        = ['png','pdf']
 yaxis          = ['lin','log']
 #yaxis          = ['lin']
 stacksig       = ['stack','nostack']
 #stacksig       = ['stack']
-formats        = ['pdf','png','eps','tex']
+formats        = ['pdf']
 #yaxis          = ['lin']
-outdir         = '/eos/user/l/lia/FCCee/MidTerm/mumu/MVAInputs/plots/'
+outdir         = '/eos/user/l/lia/FCCee/TopHiggs/mumu/MVAInputs/plots/'
 
 variables = [   #muons
                 "leading_zll_lepton_p",
@@ -23,13 +23,16 @@ variables = [   #muons
                 "subleading_zll_lepton_theta",
                 #Zed
                 "zll_m",
+                "zll_m_large",
                 "zll_p",
+                "zll_p_large",
                 "zll_theta",
                 #more control variables
                 "zll_leptons_acolinearity",
                 "zll_leptons_acoplanarity",
                 #Recoil
                 "zll_recoil_m",
+                "zll_recoil_m_large",
                 #missing Information
                 "cosTheta_miss",
                 #Higgsstrahlungness
@@ -38,11 +41,19 @@ variables = [   #muons
 ###Dictonnary with the analysis name as a key, and the list of selections to be plotted for this analysis. The name of the selections should be the same than in the final selection
 selections = {}
 selections['ZH']   =[ 
-                     "sel_Baseline_no_costhetamiss"
+                     "noselection",
+                     "sel_Basic",
+                     "sel_Baseline",
+                     "sel_Baseline_pT20",
+                     "sel_Basic_pT20"
                      ]
 
 extralabel = {}
-extralabel["sel_Baseline_no_costhetamiss"]            = "Baseline without cos#theta_{miss} cut"   
+extralabel["sel_Basic"]            = "Basic selection"
+extralabel["sel_Baseline"]         = "Baseline selection"
+extralabel["sel_Baseline_pT20"]    = "Baseline selection, p_{ll} > 20 GeV"
+extralabel["sel_Basic_pT20"]       = "Basic selection, p_{ll} > 20 GeV"
+extralabel["noselection"]          = "No selection"   
 
 
 colors = {}
@@ -57,15 +68,20 @@ colors['gagamumu'] = ROOT.kBlue-8
 colors['gagaee'] = ROOT.kBlue-8
 colors['WW'] = ROOT.kBlue+1
 colors['ZZ'] = ROOT.kGreen+2
+colors['ttbar'] = ROOT.kOrange+1
+colors['nunuH'] = ROOT.kRed+3
+
 plots = {}
-plots['ZH'] = {'signal':{'mumuH':['wzp6_ee_mumuH_ecm240']},
+plots['ZH'] = {'signal':{'mumuH':['wzp6_ee_mumuH_ecm365']},
                'backgrounds':{
-                                'WWmumu':['p8_ee_WW_mumu_ecm240'],
-                                'ZZ':['p8_ee_ZZ_ecm240'],
-                                'Zmumu':['wzp6_ee_mumu_ecm240'],
-                                'eeZ':["wzp6_egamma_eZ_Zmumu_ecm240",
-                                     "wzp6_gammae_eZ_Zmumu_ecm240"],
-                                'gagamumu':["wzp6_gaga_mumu_60_ecm240"]
+                                'WW':['p8_ee_WW_ecm365'],
+                                'ZZ':['p8_ee_ZZ_ecm365'],
+                                'Zmumu':['wzp6_ee_mumu_ecm365'],
+                                'eeZ':[#"wzp6_egamma_eZ_Zmumu_ecm365",
+                                     "wzp6_gammae_eZ_Zmumu_ecm365"],
+                                'gagamumu':["wzp6_gaga_mumu_60_ecm365"],
+                                'ttbar':["p8_ee_tt_ecm365"],
+                                'nunuH':['wzp6_ee_nunuH_ecm365']
                                 }
               }
 legend = {}
@@ -80,5 +96,7 @@ legend['gagamumu'] = '#gamma#gamma#rightarrow#mu^{+}#mu^{-}'
 legend['gagaee'] = '#gamma#gamma#rightarrow e^{+}e^{-}'
 legend['WW'] = 'W^{+}W^{-}'
 legend['ZZ'] = 'ZZ'
+legend['ttbar'] = 't#bar{t}'
+legend['nunuH'] = '#nu#nuH'
 
 

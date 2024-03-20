@@ -1,9 +1,9 @@
 #python examples/FCCee/higgs/mH-recoil/mumu/finalSel.py
 #Input directory where the files produced at the pre-selection level are
-inputDir = "/eos/user/l/lia/FCCee/MidTerm/mumu/MVAInputs"
+inputDir = "/eos/user/l/lia/FCCee/MidTerm/ee/MVAInputs"
 
 #Input directory where the files produced at the pre-selection level are
-outputDir = "/eos/user/l/lia/FCCee/MidTerm/mumu/MVAInputs/final_test"
+outputDir = "/eos/user/l/lia/FCCee/MidTerm/ee/MVAInputs/final"
 
 ###Link to the dictonary that contains all the cross section informations etc...
 procDict = "FCCee_procDict_winter2023_training_IDEA.json"
@@ -21,15 +21,15 @@ procDictAdd={"myp8_ee_WW_mumu_ecm240": {"numberOfEvents": 5000000, "sumOfWeights
 ###Process list that should match the produced files.
 processList = {
                 #signal
-                "wzp6_ee_mumuH_ecm240",
+                "wzp6_ee_eeH_ecm240",
                 #background: 
-                "p8_ee_WW_mumu_ecm240",
+                "p8_ee_WW_ee_ecm240",
                 "p8_ee_ZZ_ecm240",
-                "wzp6_ee_mumu_ecm240",
+                "wzp6_ee_ee_Mee_30_150_ecm240",
                 #rare backgrounds:
-                "wzp6_egamma_eZ_Zmumu_ecm240",
-                "wzp6_gammae_eZ_Zmumu_ecm240",
-                "wzp6_gaga_mumu_60_ecm240",
+                "wzp6_egamma_eZ_Zee_ecm240",
+                "wzp6_gammae_eZ_Zee_ecm240",
+                "wzp6_gaga_ee_60_ecm240",
               }
 ###Add MySample_p8_ee_ZH_ecm240 as it is not an offical process
 

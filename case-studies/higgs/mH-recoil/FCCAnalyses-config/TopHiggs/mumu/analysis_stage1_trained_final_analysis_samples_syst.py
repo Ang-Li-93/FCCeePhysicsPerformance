@@ -3,7 +3,7 @@
 inputDir = "/eos/user/l/lia/FCCee/MidTerm/mumu/BDT_analysis_samples"
 
 #Input directory where the files produced at the pre-selection level are
-outputDir = "/eos/user/l/lia/FCCee/MidTerm/mumu/BDT_analysis_samples/syst_test"
+outputDir = "/eos/user/l/lia/FCCee/MidTerm/mumu/BDT_analysis_samples/syst"
 
 ###Link to the dictonary that contains all the cross section informations etc...
 procDict = "FCCee_procDict_winter2023_IDEA.json"

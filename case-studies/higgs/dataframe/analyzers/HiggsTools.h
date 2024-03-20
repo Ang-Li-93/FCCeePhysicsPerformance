@@ -126,7 +126,42 @@ namespace HiggsTools{
     float scaleunc = 1.;
     ROOT::VecOps::RVec<edm4hep::ReconstructedParticleData> operator() (ROOT::VecOps::RVec<edm4hep::ReconstructedParticleData> in);
   };
-	/// return the costheta of the input ReconstructedParticles
+
+  struct BoostFrame_gen {
+    BoostFrame_gen( float arg_low_energy );
+    float low_energy = 30;
+    ROOT::VecOps::RVec<edm4hep::MCParticleData> operator() (ROOT::VecOps::RVec<edm4hep::MCParticleData> in);
+  };
+
+  struct BoostFrame {
+    BoostFrame( float arg_low_energy );
+    float low_energy = 30;
+    ROOT::VecOps::RVec<edm4hep::ReconstructedParticleData> operator() (ROOT::VecOps::RVec<edm4hep::ReconstructedParticleData> in);
+  };
+
+  struct resonanceBuilder_mass_recoil_boosted {
+        float m_resonance_mass;
+        float m_recoil_mass;
+        float chi2_recoil_frac;
+        float ecm;
+        bool m_use_MC_Kinematics;
+        resonanceBuilder_mass_recoil_boosted(float arg_resonance_mass, float arg_recoil_mass, float arg_chi2_recoil_frac, float arg_ecm, bool arg_use_MC_Kinematics);
+        ROOT::VecOps::RVec<edm4hep::ReconstructedParticleData> operator()(ROOT::VecOps::RVec<edm4hep::ReconstructedParticleData> legs,
+                        ROOT::VecOps::RVec<int> recind,
+                        ROOT::VecOps::RVec<int> mcind,
+                        ROOT::VecOps::RVec<edm4hep::ReconstructedParticleData> reco,
+                        ROOT::VecOps::RVec<edm4hep::MCParticleData> mc,
+                        ROOT::VecOps::RVec<int> parents,
+                        ROOT::VecOps::RVec<int> daugthers) ;
+  }; 
+
+  struct recoilBuilder_boosted {
+    recoilBuilder_boosted(float arg_sqrts);
+    float m_sqrts = 240.0;
+    ROOT::VecOps::RVec<edm4hep::ReconstructedParticleData> operator() (ROOT::VecOps::RVec<edm4hep::ReconstructedParticleData> in) ;
+  };
+
+  /// return the costheta of the input ReconstructedParticles
 	ROOT::VecOps::RVec<float> get_cosTheta(ROOT::VecOps::RVec<edm4hep::ReconstructedParticleData> in);
 
 	/// return the costheta of the input missing momentum 
@@ -165,7 +200,21 @@ namespace HiggsTools{
   
   //Higgstrahlungness
   float Higgsstrahlungness(float mll, float mrecoil);
-  float deltaR(ROOT::VecOps::RVec<edm4hep::ReconstructedParticleData> in); 
+  float deltaR(ROOT::VecOps::RVec<edm4hep::ReconstructedParticleData> in);
+  float deltaRPrime(ROOT::VecOps::RVec<edm4hep::ReconstructedParticleData> in);
+  float deltaPhi(ROOT::VecOps::RVec<edm4hep::ReconstructedParticleData> in);
+  float deltaTheta(ROOT::VecOps::RVec<edm4hep::ReconstructedParticleData> in);
+  float deltaEta(ROOT::VecOps::RVec<edm4hep::ReconstructedParticleData> in);
+  float min_deltaR(ROOT::VecOps::RVec<edm4hep::ReconstructedParticleData> in);
+  float min_deltaRPrime(ROOT::VecOps::RVec<edm4hep::ReconstructedParticleData> in);
+  float min_deltaPhi(ROOT::VecOps::RVec<edm4hep::ReconstructedParticleData> in);
+  float min_deltaTheta(ROOT::VecOps::RVec<edm4hep::ReconstructedParticleData> in);
+  float min_deltaEta(ROOT::VecOps::RVec<edm4hep::ReconstructedParticleData> in);
+  float max_deltaR(ROOT::VecOps::RVec<edm4hep::ReconstructedParticleData> in);
+  float max_deltaRPrime(ROOT::VecOps::RVec<edm4hep::ReconstructedParticleData> in);
+  float max_deltaPhi(ROOT::VecOps::RVec<edm4hep::ReconstructedParticleData> in);
+  float max_deltaTheta(ROOT::VecOps::RVec<edm4hep::ReconstructedParticleData> in);
+  float max_deltaEta(ROOT::VecOps::RVec<edm4hep::ReconstructedParticleData> in);
 
   ROOT::VecOps::RVec<edm4hep::ReconstructedParticleData> whizard_zh_select_prompt_leptons(ROOT::VecOps::RVec<edm4hep::ReconstructedParticleData> in, 
                                                                                           ROOT::VecOps::RVec<int> recind, 
@@ -176,5 +225,8 @@ namespace HiggsTools{
                                                                                           ROOT::VecOps::RVec<int> daugther);
 
   bool whizard_zh_from_prompt(int i, ROOT::VecOps::RVec<edm4hep::MCParticleData> in, ROOT::VecOps::RVec<int> ind);
+
+  ROOT::VecOps::RVec<edm4hep::MCParticleData> get_gen_pdg(ROOT::VecOps::RVec<edm4hep::MCParticleData> mc, int pdgId, bool abs);
+
 }
 #endif

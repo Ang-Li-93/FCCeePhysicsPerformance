@@ -1,9 +1,9 @@
 #python examples/FCCee/higgs/mH-recoil/mumu/finalSel.py
 #Input directory where the files produced at the pre-selection level are
-inputDir = "/eos/user/l/lia/FCCee/MidTerm/mumu/BDT_analysis_samples"
+inputDir = "/eos/user/l/lia/FCCee/MidTerm/ee/BDT_analysis_samples"
 
 #Input directory where the files produced at the pre-selection level are
-outputDir = "/eos/user/l/lia/FCCee/MidTerm/mumu/BDT_analysis_samples/syst_test"
+outputDir = "/eos/user/l/lia/FCCee/MidTerm/ee/BDT_analysis_samples/syst"
 
 ###Link to the dictonary that contains all the cross section informations etc...
 procDict = "FCCee_procDict_winter2023_IDEA.json"
@@ -19,31 +19,31 @@ procDictAdd={"mywzp6_ee_mumuH_ecm240": {"numberOfEvents": 1000000, "sumOfWeights
 ###Process list that should match the produced files.
 processList = {
                 #signal
-                "wzp6_ee_mumuH_ecm240",
-                ##signal mass
-                #"wzp6_ee_mumuH_mH-higher-100MeV_ecm240",
-                #"wzp6_ee_mumuH_mH-higher-50MeV_ecm240",
-                #"wzp6_ee_mumuH_mH-lower-100MeV_ecm240",
-                #"wzp6_ee_mumuH_mH-lower-50MeV_ecm240",
-                #signal syst
-                "wzp6_ee_mumuH_BES-higher-1pc_ecm240",
-                "wzp6_ee_mumuH_BES-lower-1pc_ecm240",
-                #background: 
+                "wzp6_ee_eeH_ecm240",
+                ##singl_mass
+                #"wzp6_ee_eeH_mH-higher-100MeV_ecm240",
+                #"wzp6_ee_eeH_mH-higher-50MeV_ecm240",
+                #"wzp6_ee_eeH_mH-lower-100MeV_ecm240",
+                #"wzp6_ee_eeH_mH-lower-50MeV_ecm240",
+                #signal_syst
+                "wzp6_ee_eeH_BES-higher-1pc_ecm240",
+                "wzp6_ee_eeH_BES-lower-1pc_ecm240",
+                #background
                 "p8_ee_WW_ecm240",
                 "p8_ee_ZZ_ecm240",
-                "wzp6_ee_mumu_ecm240",
+                "wzp6_ee_ee_Mee_30_150_ecm240",
                 "wzp6_ee_tautau_ecm240",
-                #rare backgrounds:
-                "wzp6_egamma_eZ_Zmumu_ecm240",
-                "wzp6_gammae_eZ_Zmumu_ecm240",
-                "wzp6_gaga_mumu_60_ecm240",
+                #background rare
+                "wzp6_egamma_eZ_Zee_ecm240",
+                "wzp6_gammae_eZ_Zee_ecm240",
+                "wzp6_gaga_ee_60_ecm240",
                 "wzp6_gaga_tautau_60_ecm240",
                 "wzp6_ee_nuenueZ_ecm240"
+                #'wzp6_ee_mumuH_ecm240':{'fraction':0.02}
               }
-###Add MySample_p8_ee_ZH_ecm240 as it is not an offical process
 
 #Number of CPUs to use
-nCPUS = 2
+nCPUS = 8
 #produces ROOT TTrees, default is False
 doTree = False
 
