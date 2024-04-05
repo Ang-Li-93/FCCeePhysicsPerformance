@@ -1,14 +1,15 @@
 #Mandatory: List of processes
 processList = {
-   # 'wzp6_ee_mumuH_ecm365':{'chunks':10},
-   # 'p8_ee_tt_ecm365':{'chunks':20},
-   # 'p8_ee_WW_ecm365':{'chunks':50},
-   # #'wzp6_egamma_eZ_Zmumu_ecm365':{'chunks':10},
-   # 'wzp6_gammae_eZ_Zmumu_ecm365':{'chunks':10},
-   # 'wzp6_ee_mumu_ecm365':{'chunks':10},
-   # 'p8_ee_ZZ_ecm365':{'chunks':50},
-   # "wzp6_gaga_mumu_60_ecm365":{'chunks':10},
-    'wzp6_ee_nunuH_ecm365':{'chunks':10}
+    #'wzp6_ee_eeH_ecm365':{'fraction':0.01},
+    #'p8_ee_tt_ecm365':{'fraction':0.01},
+    #'p8_ee_WW_ecm365':{'fraction':0.01},
+    #'wzp6_egamma_eZ_Zee_ecm365':{'fraction':0.01},
+    #'wzp6_gammae_eZ_Zee_ecm365':{'fraction':0.01},
+    #'wzp6_ee_mumu_ecm365':{'fraction':0.01},
+    "wzp6_ee_ee_Mee_30_150_ecm365":{'fraction':0.01},
+    'p8_ee_ZZ_ecm365':{'fraction':0.01},
+    "wzp6_gaga_ee_60_ecm365":{'fraction':0.01},
+    'wzp6_ee_nunuH_ecm365':{'fraction':0.01}
 }
 
 #Mandatory: Production tag when running over EDM4Hep centrally produced events, this points to the yaml files for getting sample statistics
@@ -17,23 +18,23 @@ prodTag     = "FCCee/winter2023/IDEA/"
 
 #from userConfig import loc
 #Optional: output directory, default is local dir
-#outputDir="/afs/cern.ch/work/l/lia/private/FCC/NewWorkFlow/FCCeePhysicsPerformance/case-studies/higgs/mH-recoil/ZH_mumu_recoil_batch/stage1/flatNtuples_test"
-#outputDir = "/eos/user/l/lia/FCCee/TopHiggs/mumu/MVAInputs/"
-outputDirEos= "/eos/user/l/lia/FCCee/TopHiggs/mumu/MVAInputs/"
-eosType = "eosuser"
+#outputDir="/afs/cern.ch/work/l/lia/private/FCC/NewWorkFlow/FCCeePhysicsPerformance/case-studies/higgs/mH-recoil/ZH_ee_recoil_batch/stage1/flatNtuples_test"
+outputDir = "/eos/user/l/lia/FCCee/TopHiggs/ee/MVAInputs_test/"
+#outputDirEos= "/eos/user/l/lia/FCCee/TopHiggs/ee/MVAInputs/"
+#eosType = "eosuser"
 #Optional: ncpus, default is 4
 nCPUS       = 4
 
 #Optional running on HTCondor, default is False
-runBatch    = True
-#runBatch    = False
+#runBatch    = True
+runBatch    = False
 #Optional batch queue name when running on HTCondor, default is workday
 batchQueue = "longlunch"
 
 #Optional computing account when running on HTCondor, default is group_u_FCC.local_gen
 compGroup = "group_u_FCC.local_gen"
 
-userBatchConfig="/afs/cern.ch/work/l/lia/private/FCC/NewWorkFlow/FCCeePhysicsPerformance/case-studies/higgs/mH-recoil/FCCAnalyses-config/TopHiggs/mumu/userBatch.Config"
+userBatchConfig="/afs/cern.ch/work/l/lia/private/FCC/NewWorkFlow/FCCeePhysicsPerformance/case-studies/higgs/mH-recoil/FCCAnalyses-config/TopHiggs/ee/userBatch.Config"
 #USER DEFINED CODE
 import ROOT
 ROOT.gInterpreter.Declare("""
@@ -71,7 +72,8 @@ class RDFanalysis():
             ## Alias for muon and MC truth informations##
             #############################################
             #.Alias("Lepton0", "AllMuon#0.index")
-            .Alias("Lepton0", "Muon#0.index")
+            #.Alias("Lepton0", "Muon#0.index")
+            .Alias("Lepton0", "Electron#0.index")
             .Alias("MCRecoAssociations0", "MCRecoAssociations#0.index")
             .Alias("MCRecoAssociations1", "MCRecoAssociations#1.index")
             .Alias("Particle0", "Particle#0.index")
