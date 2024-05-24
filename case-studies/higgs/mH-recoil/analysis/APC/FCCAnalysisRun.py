@@ -7,7 +7,7 @@ import json
 import subprocess
 import importlib.util
 from array import array
-from config.common_defaults import deffccdicts
+#from config.common_defaults import deffccdicts
 import datetime
 
 print ("----> Load cxx analyzers from libFCCAnalyses... ",)
@@ -17,7 +17,7 @@ ROOT.gErrorIgnoreLevel = ROOT.kFatal
 #Is this still needed?? 01/04/2022 still to be the case
 _fcc  = ROOT.dummyLoader
 _higgs  = ROOT.dummyLoaderHiggs
-
+deffccdicts     = "/cvmfs/fcc.cern.ch/FCCDicts/"
 date=datetime.datetime.fromtimestamp(datetime.datetime.now().timestamp()).strftime('%Y-%m-%d_%H-%M-%S')
 
 #__________________________________________________________
